@@ -1,0 +1,20 @@
+[project]
+name = "crawl4ai-rag"
+version = "0.1.0"
+description = "A Retrieval-Augmented Generation (RAG) system for generating Crawl4AI code snippets based on natural language queries"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "langchain>=0.1.0",
+    "langchain-openai>=0.0.5",
+    "langchain-community>=0.0.5",
+    "openai>=1.0.0",
+    "supabase>=2.0.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.0.0",
+]
+
+[tool.setuptools]
+packages = ["app"]

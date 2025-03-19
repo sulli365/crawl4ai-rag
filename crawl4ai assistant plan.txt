@@ -1,0 +1,231 @@
+Project directory structure
+
+crawl4ai-rag/    # Root project folder
+│── .venv/       # Virtual environment (auto-managed by uv)
+│── data/        # Store docs & embeddings (optional)
+│── app/         # Application code
+│   │── __init__.py
+│   │── main.py  # FastAPI server
+│   │── embeddings.py  # Handles embedding & Supabase storage
+│   │── retrieval.py  # Handles retrieval from Supabase
+│   │── generator.py  # Calls GPT-4 for code generation
+│── pyproject.toml  # Dependency management (instead of requirements.txt)
+│── .env          # API keys (Use dotenv)
+│── README.md     # Project documentation
+
+
+Full plan (all output)
+
+Step 1: Install uv (If Not Installed)
+
+pip install uv
+
+    Note: uv is a standalone package manager, so once installed, you no longer need pip or venv.
+	
+
+2. Step 2: Create a New Project Folder
+
+mkdir crawl4ai-rag
+cd crawl4ai-rag
+
+
+Step 3: Initialize a pyproject.toml File
+
+Instead of requirements.txt, uv uses pyproject.toml.
+
+Run:
+
+uv init
+
+This creates a pyproject.toml file, where dependencies will be managed.
+
+
+Step 4: Add Dependencies
+
+Run:
+
+uv pip install openai supabase langchain fastapi uvicorn python-dotenv
+
+This installs:
+
+    openai → Calls GPT-4
+    supabase → Connects to the Supabase database
+    langchain → Manages retrieval & LLM interaction
+    fastapi → API server
+    uvicorn → Runs the FastAPI server
+    python-dotenv → Loads API keys securely
+	
+Step 5: Freeze Dependencies
+
+Instead of pip freeze > requirements.txt, uv automatically updates pyproject.toml.
+
+To check installed packages:
+
+uv pip list
+
+
+Set Up API Keys Securely
+
+Instead of hardcoding API keys, store them in a .env file.
+
+Create a .env file in the project root:
+
+OPENAI_API_KEY=your-openai-api-key
+SUPABASE_URL=your-supabase-url
+SUPABASE_KEY=your-supabase-api-key
+
+Load them in Python:
+
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+supabase_url = os.getenv("SUPABASE_URL")
+supabase_key = os.getenv("SUPABASE_KEY")
+
+
+Organizing the Codebase
+
+Instead of one big script, split it into modules:
+🔹 embeddings.py (Handles Storing Docs in Supabase)
+
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.vectorstores import SupabaseVectorStore
+from langchain.schema import Document
+import os
+from supabase import create_client
+from dotenv import load_dotenv
+
+load_dotenv()
+
+supabase_client = create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY"))
+embedding_model = OpenAIEmbeddings()
+
+def store_documents():
+    docs = [
+        Document(page_content="AsyncWebCrawler is used to define the URLs to scrape."),
+        Document(page_content="arun() executes the crawling and returns extracted data."),
+        Document(page_content="Use magic=True in arun() to enable automatic extraction."),
+    ]
+    
+    SupabaseVectorStore.from_documents(
+        documents=docs,
+        embedding=embedding_model,
+        client=supabase_client,
+        table_name="crawl4ai_docs"
+    )
+
+    print("✅ Docs embedded & stored!")
+
+if __name__ == "__main__":
+    store_documents()
+
+🔹 retrieval.py (Handles Fetching Docs from Supabase)
+
+from langchain.vectorstores import SupabaseVectorStore
+from langchain.embeddings.openai import OpenAIEmbeddings
+from supabase import create_client
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+supabase_client = create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY"))
+embedding_model = OpenAIEmbeddings()
+
+retriever = SupabaseVectorStore(
+    client=supabase_client,
+    embedding=embedding_model,
+    table_name="crawl4ai_docs"
+).as_retriever()
+
+def retrieve_relevant_docs(query: str):
+    """Fetches relevant Crawl4AI documentation snippets."""
+    return retriever.get_relevant_documents(query)
+
+if __name__ == "__main__":
+    print(retrieve_relevant_docs("How to use arun()?"))
+
+🔹 generator.py (Calls GPT-4 to Generate Code)
+
+from langchain.chains import RetrievalQA
+from langchain.chat_models import ChatOpenAI
+from retrieval import retriever
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+llm = ChatOpenAI(model="gpt-4", temperature=0.2)
+
+qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever)
+
+def generate_scraper_code(user_query: str):
+    """Generates Crawl4AI code based on user request."""
+    return qa_chain.run(user_query)
+
+if __name__ == "__main__":
+    print(generate_scraper_code("Extract article titles from TechCrunch"))
+	
+
+🔹 main.py (FastAPI Server)
+
+from fastapi import FastAPI
+from pydantic import BaseModel
+from generator import generate_scraper_code
+
+app = FastAPI()
+
+class ScraperRequest(BaseModel):
+    query: str  # User request (e.g., "Extract article titles and links from TechCrunch")
+
+@app.post("/generate_scraper/")
+def generate_scraper(request: ScraperRequest):
+    code = generate_scraper_code(request.query)
+    return {"generated_code": code}
+
+# Run with: uvicorn app.main:app --reload
+
+6️⃣ Running the Project
+Step 1: Activate uv's Virtual Environment (Optional)
+
+uv venv
+source .venv/bin/activate  # Linux/macOS
+.venv\Scripts\activate     # Windows
+
+Step 2: Store Documentation in Supabase
+
+uv pip run python app/embeddings.py
+
+Step 3: Start the FastAPI Server
+
+uv pip run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+Step 4: Test the API
+
+curl -X POST "http://localhost:8000/generate_scraper/" -H "Content-Type: application/json" -d '{"query": "Extract article titles and links from TechCrunch"}'
+
+Final Thoughts
+
+✅ Why Use uv Instead of pip?
+
+    Faster package management 🚀
+    Better dependency resolution 🛠️
+    Manages .venv automatically (optional)
+
+✅ Why Use This Folder Structure?
+
+    Modular: Easy to manage different components
+    Scalable: Can be extended for more features
+
+✅ Next Steps?
+Would you like to:
+
+    Deploy this API to a cloud service (e.g., Fly.io, AWS)?
+    Add authentication to the API?
+    Fine-tune GPT-4 on Crawl4AI-specific examples?
+
+Let me know how you want to improve this further! 🚀😃
+
