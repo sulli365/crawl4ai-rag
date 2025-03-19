@@ -1,89 +1,133 @@
 # Crawl4AI RAG
 
-A Retrieval-Augmented Generation (RAG) system for generating Crawl4AI code snippets based on natural language queries.
+An agentic RAG (Retrieval-Augmented Generation) application built around the crawl4ai Python library. The application serves as an intelligent assistant that can analyze websites, generate scraping code, and produce structured markdown documentation based on the scraped content.
 
 ## Features
 
-- FastAPI server for code generation
-- Supabase vector store for document storage and retrieval
-- OpenAI GPT-4 for code generation
-- LangChain for RAG implementation
+- **Website Analysis**: Intelligently analyze websites to understand their structure and content organization
+- **Code Generation**: Produce Python code tailored to specific scraping requirements
+- **Markdown Export**: Convert scraped content into well-structured markdown files
+- **Flexible Output Options**: Return content directly or write to files based on user preference
+- **Supabase Integration**: Store and retrieve crawled pages using Supabase for persistence
+- **Automatic Updates**: Monitor source websites for changes and update the database accordingly
 
 ## Setup
 
-1. Install uv (if not already installed):
+1. Install dependencies:
 ```bash
-pip install uv
+pip install -e .
 ```
 
-2. Create and activate virtual environment:
-```bash
-uv venv
-# On Windows
-.venv\Scripts\activate
-# On Unix/MacOS
-source .venv/bin/activate
-```
-
-3. Install dependencies:
-```bash
-uv pip install .
-```
-
-4. Configure environment variables:
-- Copy `.env.example` to `.env`
+2. Configure environment variables:
+- Copy `.env.example` to `.env` (or set environment variables)
 - Add your API keys:
-  - OPENAI_API_KEY: Your OpenAI API key
-  - SUPABASE_URL: Your Supabase project URL
-  - SUPABASE_KEY: Your Supabase API key
+  ```
+  SUPABASE_URL=your-supabase-url
+  SUPABASE_KEY=your-supabase-key
+  OPENAI_API_KEY=your-openai-api-key
+  GITHUB_TOKEN=your-github-token (optional)
+  ```
 
 ## Usage
 
-1. Store documentation embeddings:
+### Command Line Interface
+
+#### Analyze a website and generate code
+
 ```bash
-python -m app.embeddings
+crawl4ai-rag analyze https://example.com --purpose "Extract all product information"
 ```
 
-2. Start the FastAPI server:
+#### Generate markdown from a website
+
 ```bash
-uvicorn app.main:app --reload
+crawl4ai-rag analyze https://example.com --purpose "Convert documentation to markdown" --output-markdown --output-dir ./docs
 ```
 
-3. Generate code via API:
+#### Sync crawl4ai GitHub repository and documentation to Supabase
+
 ```bash
-curl -X POST "http://localhost:8000/generate_scraper/" \
-     -H "Content-Type: application/json" \
-     -d '{"query": "Extract article titles from TechCrunch"}'
+crawl4ai-rag sync
 ```
 
-Or visit http://localhost:8000/docs for the interactive API documentation.
+#### Detect website type
+
+```bash
+crawl4ai-rag detect https://example.com
+```
+
+### Python API
+
+```python
+import asyncio
+from crawl4ai_rag import analyze_and_generate
+
+async def main():
+    # Analyze website and generate code
+    result = await analyze_and_generate(
+        urls="https://example.com",
+        purpose="Extract all product information",
+        output_code=True,
+        output_markdown=True,
+        markdown_output_dir="./docs"
+    )
+    
+    # Print generated code
+    print(result["code"])
+    
+    # Print markdown files
+    print(result["markdown_files"])
+
+# Run the async function
+asyncio.run(main())
+```
 
 ## Project Structure
 
 ```
 crawl4ai-rag/
-│── .venv/       # Virtual environment (auto-managed by uv)
-│── data/        # Store docs & embeddings (optional)
-│── app/         # Application code
-│   │── __init__.py
-│   │── main.py          # FastAPI server
-│   │── embeddings.py    # Handles embedding & Supabase storage
-│   │── retrieval.py     # Handles retrieval from Supabase
-│   │── generator.py     # Calls GPT-4 for code generation
-│── pyproject.toml  # Dependency management
-│── .env          # API keys
-│── README.md     # This file
+│── analyzer/            # Website analysis components
+│   │── strategies/      # Scraping strategies for different website types
+│── codegen/             # Code generation components
+│   │── templates/       # Code templates
+│── crawlers/            # Crawlers for different sources
+│   │── docs/            # Documentation website crawler
+│   │── github/          # GitHub repository crawler
+│── exporters/           # Export components
+│── supabase/            # Supabase integration
+│── utils/               # Utility functions
+│── cli.py               # Command-line interface
+│── config.py            # Configuration settings
+│── pyproject.toml       # Project metadata and dependencies
+│── README.md            # This file
 ```
 
 ## Development
 
-The application is built with modern Python tools and practices:
-- uv for dependency management
-- FastAPI for the web server
-- Pydantic for data validation
-- LangChain for RAG implementation
-- Supabase for vector storage
-- OpenAI GPT-4 for code generation
+### Requirements
+
+- Python 3.9 or higher
+- Supabase account and project
+- OpenAI API key
+
+### Testing
+
+```bash
+pytest
+```
+
+### Code Formatting
+
+```bash
+black .
+isort .
+```
+
+### Type Checking
+
+```bash
+mypy .
+```
 
 ## License
 

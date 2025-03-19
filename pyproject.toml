@@ -1,20 +1,77 @@
 [project]
 name = "crawl4ai-rag"
 version = "0.1.0"
-description = "A Retrieval-Augmented Generation (RAG) system for generating Crawl4AI code snippets based on natural language queries"
+description = "Agentic RAG application for crawl4ai that analyzes websites, generates scraping code, and exports markdown"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.9"
 dependencies = [
-    "langchain>=0.1.0",
-    "langchain-openai>=0.0.5",
-    "langchain-community>=0.0.5",
+    # Core dependencies
+    "crawl4ai>=0.4.247",
     "openai>=1.0.0",
     "supabase>=2.0.0",
-    "fastapi>=0.100.0",
-    "uvicorn>=0.23.0",
-    "python-dotenv>=1.0.0",
     "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+    
+    # Web and HTTP
+    "httpx>=0.24.0",
+    "requests>=2.28.0",
+    
+    # CLI
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    
+    # Utilities
+    "loguru>=0.7.0",
+    "jinja2>=3.1.0",
+    "beautifulsoup4>=4.12.0",
+    
+    # Async
+    "asyncio>=3.4.3",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.0.0",
+    "ruff>=0.0.270",
+]
+
+[project.scripts]
+crawl4ai-rag = "cli:app"
+
 [tool.setuptools]
-packages = ["app"]
+packages = [
+    "",
+    "analyzer",
+    "analyzer.strategies",
+    "codegen",
+    "codegen.templates",
+    "crawlers",
+    "crawlers.docs",
+    "crawlers.github",
+    "exporters",
+    "supabase",
+    "utils",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py39"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

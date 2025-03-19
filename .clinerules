@@ -1,0 +1,96 @@
+# Cline Rules for crawl4ai-rag Project
+
+## Project Patterns
+
+### Code Style
+- Use Python 3.9+ features and type hints throughout the codebase
+- Follow PEP 8 guidelines for code formatting
+- Use docstrings for all public functions, classes, and methods
+- Prefer explicit over implicit code
+- Use meaningful variable and function names
+
+### Project Structure
+- Organize code in a modular fashion with clear separation of concerns
+- Keep modules focused on a single responsibility
+- Use relative imports within the package
+- Place tests in a separate `tests` directory mirroring the package structure
+
+### Development Workflow
+- Document changes in Memory Bank files, particularly activeContext.md and progress.md
+- Update .clinerules when discovering new patterns or preferences
+- Follow test-driven development where appropriate
+- Keep commits focused and with descriptive messages
+
+## Technical Decisions
+
+### Supabase Integration
+- Use the Supabase Python client for database interactions
+- Follow the existing schema for the crawl4ai_site_pages table
+- Use connection pooling for efficient database access
+- Handle connection errors gracefully with retries
+
+### Code Generation
+- Use Jinja2 templates for code generation
+- Organize templates by website type and scraping purpose
+- Include comprehensive error handling in generated code
+- Add detailed comments explaining the generated code
+
+### Error Handling
+- Use structured logging with loguru
+- Implement graceful degradation for partial failures
+- Provide detailed error messages with context
+- Use custom exception classes for different error types
+
+## User Preferences
+
+### Output Format
+- Generated code should be well-formatted and follow PEP 8
+- Markdown output should use consistent formatting
+- CLI output should be clear and concise
+- Error messages should be informative and actionable
+
+### Documentation
+- Keep Memory Bank files up-to-date with current status
+- Document API changes in activeContext.md
+- Track progress in progress.md
+- Update technical decisions in .clinerules
+
+## Implementation Notes
+
+### Website Analysis
+- Start with basic structure analysis before detailed content extraction
+- Consider rate limiting to avoid overloading target websites
+- Use existing crawl4ai capabilities where possible
+- Implement fallbacks for JavaScript-heavy websites
+
+### Markdown Export
+- Preserve original content structure where possible
+- Use consistent heading levels
+- Include metadata about the source
+- Handle different content types appropriately (text, tables, code blocks)
+
+### Testing
+- Use pytest for all testing
+- Mock external dependencies (Supabase, HTTP requests)
+- Use VCR or similar for HTTP request recording/playback
+- Include both unit and integration tests
+
+## Known Challenges
+
+### Performance
+- Crawling large websites can be time-consuming
+- Vector embeddings generation requires API calls
+- Supabase has query limits that need to be managed
+- Memory usage can be high when processing large websites
+
+### Security
+- API keys need to be securely managed
+- User-provided URLs must be validated
+- Rate limiting and respectful crawling practices must be followed
+- Crawled content may contain sensitive information
+
+## Project Evolution
+- Initially focused on basic functionality
+- Will expand to more specialized website types
+- May add more output formats beyond code and markdown
+- Could integrate with other tools and workflows
