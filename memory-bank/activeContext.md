@@ -1,7 +1,7 @@
 # Active Context: crawl4ai-rag
 
 ## Current Focus
-The project has been restructured from an MCP server to an agentic RAG application focused on website analysis, code generation, and markdown export. The initial implementation of the core architecture and components has been completed.
+The project has been restructured from an MCP server to an agentic RAG application focused on website analysis, code generation, and markdown export. The initial implementation of the core architecture and components has been completed. Currently, we are focusing on aligning the code implementation with the requirements specified in the Memory Bank files, addressing gaps in testing infrastructure, error handling, Supabase integration, and code generation templates.
 
 ## Recent Changes
 - Project purpose has been redefined from an MCP server to an agentic RAG application
@@ -16,6 +16,7 @@ The project has been restructured from an MCP server to an agentic RAG applicati
   - GitHub and documentation crawlers
   - Command-line interface
   - Python API
+- Created an alignment plan to address gaps between Memory Bank requirements and code implementation
 
 ## Current Tasks
 1. **Package Structure Implementation**
@@ -50,9 +51,21 @@ The project has been restructured from an MCP server to an agentic RAG applicati
 9. ✅ Implement comprehensive error handling and logging
 10. ✅ Create documentation for usage and extension
 11. ⏳ Implement testing infrastructure
-12. ⏳ Add more specialized scraping strategies
-13. ⏳ Enhance code generation templates
-14. ⏳ Improve markdown export capabilities
+    - Create test directory structure
+    - Establish base test classes
+    - Implement VCR.py configuration for HTTP mocking
+12. ⏳ Enhance error handling
+    - Implement custom exception hierarchy
+    - Improve structured logging with context
+    - Add graceful degradation for partial failures
+13. ⏳ Improve Supabase integration
+    - Implement connection pooling
+    - Add retry logic for repository methods
+    - Enhance error recovery for Supabase disconnects
+14. ⏳ Enhance code generation templates
+    - Ensure templates handle all required elements from productContext.md
+    - Add proper error handling blocks to generated code
+    - Implement metadata tracking in generated code
 
 ## Active Decisions
 
@@ -118,8 +131,9 @@ The error handling strategy has been implemented with the following approach:
 
 ## Current Blockers
 - Need to implement testing infrastructure
-- Need to add more specialized scraping strategies
-- Need to enhance code generation templates
+- Need to enhance error handling with custom exceptions
+- Need to improve Supabase integration with connection pooling and retry logic
+- Need to enhance code generation templates with better error handling and metadata tracking
 
 ## Recent Insights
 - The agentic approach allows for more flexible and intelligent scraping
