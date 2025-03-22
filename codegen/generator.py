@@ -7,9 +7,9 @@ import re
 from typing import List, Dict, Any, Optional, Tuple
 from jinja2 import Environment, FileSystemLoader, select_autoescape, Template
 
-from ..config import settings
-from ..utils.logging import get_logger
-from ..analyzer import analyze_website, generate_code
+from config import settings
+from utils.logging import get_logger
+from analyzer import analyze_website, generate_code
 
 logger = get_logger(__name__)
 

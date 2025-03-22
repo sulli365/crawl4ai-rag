@@ -7,8 +7,8 @@ from typing import Dict, Any, Optional, List, Tuple
 
 from openai import AsyncOpenAI
 
-from ..config import settings
-from ..utils.logging import get_logger
+from config import settings
+from utils.logging import get_logger
 from .github import crawl_github_repository
 from .docs import crawl_documentation_website
 

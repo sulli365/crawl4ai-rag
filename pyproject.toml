@@ -45,7 +45,6 @@ crawl4ai-rag = "cli:app"
 
 [tool.setuptools]
 packages = [
-    "",
     "analyzer",
     "analyzer.strategies",
     "codegen",
@@ -53,8 +52,8 @@ packages = [
     "crawlers",
     "crawlers.docs",
     "crawlers.github",
+    "db_client",
     "exporters",
-    "supabase",
     "utils",
 ]
 

@@ -7,10 +7,10 @@ import re
 from typing import List, Dict, Any, Optional, Tuple
 from pathlib import Path
 
-from ..config import settings
-from ..utils.logging import get_logger
-from ..utils.validation import sanitize_filename
-from ..analyzer import analyze_website, generate_markdown
+from config import settings
+from utils.logging import get_logger
+from utils.validation import sanitize_filename
+from analyzer import analyze_website, generate_markdown
 
 logger = get_logger(__name__)
 

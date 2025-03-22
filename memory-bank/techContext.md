@@ -39,10 +39,18 @@ LOG_LEVEL=INFO
 
 ### Development Workflow
 1. Clone repository
-2. Install dependencies using Poetry or pip
+2. Install dependencies using uv (preferred), Poetry, or pip
 3. Set up environment variables
 4. Run tests to verify setup
 5. Start development
+
+### Dependency Management
+- Use uv for dependency management (preferred)
+- Install packages with `uv pip install <package>`
+- Install project in development mode with `uv pip install -e .`
+- For packages with binary components (like Playwright), follow up with additional installation steps:
+  - Example: `python -m playwright install` after installing playwright
+- When adding new dependencies, update pyproject.toml
 
 ## Database Schema
 

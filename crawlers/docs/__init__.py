@@ -12,9 +12,9 @@ from xml.etree import ElementTree
 import httpx
 from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig, CacheMode
 
-from ...config import settings
-from ...utils.logging import get_logger
-from ...supabase.repository import PageRepository
+from config import settings
+from utils.logging import get_logger
+from db_client.repository import PageRepository
 
 logger = get_logger(__name__)
 

@@ -236,10 +236,12 @@ class UrlInput(BaseModel):
     url: HttpUrl
     
     @validator('url')
-    def url_must_be_valid(cls, v: str) -> str:
+    def url_must_be_valid(cls, v: HttpUrl) -> HttpUrl:
         """Validate that the URL is valid."""
         try:
-            result = urlparse(v)
+            # Convert HttpUrl to string for urlparse
+            url_str = str(v)
+            result = urlparse(url_str)
             if not all([result.scheme, result.netloc]):
                 raise ValueError("URL must have a scheme and netloc")
             return v

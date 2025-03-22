@@ -11,8 +11,8 @@ from urllib.parse import urlparse
 from openai import AsyncOpenAI
 from supabase import Client
 
-from ..config import settings
-from ..utils.logging import get_logger
+from config import settings
+from utils.logging import get_logger
 from .client import supabase_client
 
 logger = get_logger(__name__)

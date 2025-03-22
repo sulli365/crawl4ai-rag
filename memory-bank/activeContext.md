@@ -1,7 +1,7 @@
 # Active Context: crawl4ai-rag
 
 ## Current Focus
-The project has been restructured from an MCP server to an agentic RAG application focused on website analysis, code generation, and markdown export. The initial implementation of the core architecture and components has been completed. Currently, we are focusing on enhancing the website analyzer with documentation-specific metrics and validation, improving error handling with custom exceptions, and preparing for code generation template enhancements. We have also implemented a GitHub-specific documentation scraper to better handle GitHub repositories.
+The project has been restructured from an MCP server to an agentic RAG application focused on website analysis, code generation, and markdown export. The initial implementation of the core architecture and components has been completed. Currently, we are focusing on enhancing the website analyzer with documentation-specific metrics and validation, improving error handling with custom exceptions, and preparing for code generation template enhancements. We have also implemented a GitHub-specific documentation scraper to better handle GitHub repositories. We've resolved import issues by restructuring the local supabase module to db_client to avoid conflicts with the external Supabase package, and installed Playwright for web crawling capabilities.
 
 ## Recent Changes
 - Enhanced the website analyzer with documentation-specific metrics:

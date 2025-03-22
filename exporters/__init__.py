@@ -2,6 +2,7 @@
 Exporters module for the crawl4ai-rag application.
 """
 
+from typing import Dict, Optional
 from .markdown_exporter import MarkdownExporter, markdown_exporter
 
 __all__ = ["MarkdownExporter", "markdown_exporter", "export_markdown"]

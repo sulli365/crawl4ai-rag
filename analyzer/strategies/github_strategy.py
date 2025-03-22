@@ -7,7 +7,7 @@ import os
 import re
 from urllib.parse import urlparse
 
-from ...utils.logging import get_logger
+from utils.logging import get_logger
 from . import DocumentationStrategy
 
 logger = get_logger(__name__)
@@ -32,7 +32,7 @@ class GitHubDocumentationStrategy(DocumentationStrategy):
             return f"# Error: {analysis['error']}"
         
         # Import the code generator
-        from ...codegen.generator import code_generator
+        from codegen.generator import code_generator
         
         # Extract URL and purpose
         url = analysis.get("root_url", "")

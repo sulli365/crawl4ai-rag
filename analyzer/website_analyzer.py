@@ -9,10 +9,10 @@ from urllib.parse import urlparse, urljoin
 
 from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig, CacheMode
 
-from ..config import settings
-from ..utils.logging import get_logger
-from ..utils.validation import validate_url, validate_urls, validate_documentation_structure, validate_code_blocks
-from ..supabase.repository import PageRepository
+from config import settings
+from utils.logging import get_logger
+from utils.validation import validate_url, validate_urls, validate_documentation_structure, validate_code_blocks
+from db_client.repository import PageRepository
 
 logger = get_logger(__name__)
 

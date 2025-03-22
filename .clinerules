@@ -23,6 +23,16 @@
 
 ## Technical Decisions
 
+### Dependency Management
+- Use uv for package management (preferred over pip or poetry)
+- Install packages with `uv pip install <package>`
+- Install project in development mode with `uv pip install -e .`
+- For packages with binary components (like Playwright), follow up with additional installation steps:
+  - Example: `python -m playwright install` after installing playwright
+- When adding new dependencies, update pyproject.toml
+- Avoid using relative imports across package boundaries to prevent circular imports
+- Use absolute imports for cross-package references
+
 ### Supabase Integration
 - Use the Supabase Python client for database interactions
 - Follow the existing schema for the crawl4ai_site_pages table

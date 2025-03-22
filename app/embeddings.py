@@ -5,11 +5,45 @@ import os
 from supabase import create_client
 from dotenv import load_dotenv
 import time
+from typing import List, Optional
+from openai import AsyncOpenAI
 
 load_dotenv()
 
 supabase_client = create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY"))
 embedding_model = OpenAIEmbeddings()
+
+async def generate_embedding(text: str, model: Optional[str] = None) -> List[float]:
+    """
+    Generate an embedding for the given text using OpenAI.
+    
+    Args:
+        text: The text to generate an embedding for
+        model: Optional model name to use
+        
+    Returns:
+        The embedding vector
+    """
+    try:
+        from config import settings
+        
+        # Initialize OpenAI client
+        openai_client = AsyncOpenAI(api_key=settings.openai_api_key)
+        
+        # Use specified model or default from settings
+        embedding_model_name = model or settings.embedding_model
+        
+        # Generate embedding
+        response = await openai_client.embeddings.create(
+            model=embedding_model_name,
+            input=text
+        )
+        
+        return response.data[0].embedding
+    except Exception as e:
+        print(f"Error generating embedding: {str(e)}")
+        # Return a zero vector as fallback
+        return [0.0] * 1536
 
 def create_table_if_not_exists():
     """Create the vector store table if it doesn't exist."""

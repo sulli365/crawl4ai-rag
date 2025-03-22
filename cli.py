@@ -208,7 +208,7 @@ def github(
         if save_to_supabase:
             typer.echo("\nSaving to Supabase...")
             # Import the necessary modules
-            from supabase.repository import PageRepository
+            from db_client.repository import PageRepository
             from app.embeddings import generate_embedding
             
             # Run the async function to save to Supabase
@@ -364,7 +364,7 @@ async def _save_to_supabase(result: Dict[str, Any], url: str) -> bool:
     """
     try:
         from datetime import datetime, timezone
-        from supabase.repository import PageRepository
+        from db_client.repository import PageRepository
         from app.embeddings import generate_embedding
         
         # Create repository

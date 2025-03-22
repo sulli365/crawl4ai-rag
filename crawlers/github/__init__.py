@@ -11,9 +11,9 @@ from urllib.parse import urljoin
 import httpx
 from loguru import logger
 
-from ...config import settings
-from ...utils.logging import get_logger
-from ...supabase.repository import PageRepository
+from config import settings
+from utils.logging import get_logger
+from db_client.repository import PageRepository
 
 logger = get_logger(__name__)
 

@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional, Tuple
 from urllib.parse import urlparse
 
-from ...utils.logging import get_logger
+from utils.logging import get_logger
 
 logger = get_logger(__name__)
 
@@ -64,7 +64,7 @@ class GenericStrategy(ScrapingStrategy):
     
     def __init__(self):
         """Initialize the generic strategy."""
-        from ..website_analyzer import website_analyzer
+        from analyzer.website_analyzer import website_analyzer
         self.website_analyzer = website_analyzer
     
     async def analyze(self, url: str, **kwargs) -> Dict[str, Any]:
