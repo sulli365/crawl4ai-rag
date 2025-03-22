@@ -37,6 +37,24 @@ OPENAI_API_KEY=your-openai-api-key
 LOG_LEVEL=INFO
 ```
 
+### Environment Variable Security
+- **File-Based Configuration**: Environment variables are loaded from a `.env` file using pydantic_settings
+- **Template Approach**: `.env.example` serves as a template with placeholder values
+- **Verification Process**:
+  ```bash
+  # Check if .env file exists
+  ls -Force .env
+  
+  # Verify .env is not tracked in git
+  git check-ignore .env
+  
+  # Audit git history to ensure .env was never committed
+  git log -- .env
+  ```
+- **Permissions**: Set restricted permissions on the `.env` file to prevent unauthorized access
+- **Validation**: Environment variables are validated at startup with clear error messages for missing values
+- **Documentation**: Required variables are documented in `.env.example` with descriptions
+
 ### Development Workflow
 1. Clone repository
 2. Install dependencies using uv (preferred), Poetry, or pip

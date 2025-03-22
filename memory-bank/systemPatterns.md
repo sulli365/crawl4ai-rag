@@ -161,6 +161,41 @@ class PageRepository:
 - **Validation Checks**: Input validation to prevent common errors
 - **Logging**: Comprehensive logging for debugging and improvement
 
+## Environment Variable Handling
+
+The system uses a structured approach to environment variable management:
+
+```mermaid
+flowchart TD
+    A[Application Start] --> B{.env File Exists?}
+    B -->|Yes| C[Load Variables from .env]
+    B -->|No| D[Check Environment Variables]
+    C --> E[Validate Required Variables]
+    D --> E
+    E -->|Missing Variables| F[Raise Configuration Error]
+    E -->|All Variables Present| G[Initialize Components]
+    F --> H[Log Detailed Error]
+    H --> I[Exit with Clear Message]
+    G --> J[Application Running]
+    
+    subgraph "Security Checks"
+        K[Periodic Audit]
+        L[Permission Verification]
+        M[Git History Check]
+    end
+    
+    J --> K
+    K --> L
+    L --> M
+```
+
+The environment variable loading process is handled by pydantic_settings with the following key features:
+1. **Centralized Configuration**: All environment variables are defined in the `Settings` class in `config.py`
+2. **Validation**: Type checking and required field validation through Pydantic
+3. **Default Values**: Sensible defaults where appropriate
+4. **Documentation**: Clear documentation of required variables in `.env.example`
+5. **Error Handling**: Descriptive error messages when required variables are missing
+
 ## Extension Points
 
 The system is designed with several extension points:

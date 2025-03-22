@@ -95,9 +95,20 @@
 
 ### Security
 - API keys need to be securely managed
+  - Store API keys in .env file, never in code
+  - Use .env.example as a template with placeholder values
+  - Verify .env file exists before running code with `ls -Force .env`
+  - Set restricted permissions on .env file
+  - Add .env to .gitignore to prevent accidental commits
+  - Periodically audit with `git log -- .env` to ensure it hasn't been committed
 - User-provided URLs must be validated
 - Rate limiting and respectful crawling practices must be followed
 - Crawled content may contain sensitive information
+- Environment variable handling:
+  - Always use pydantic_settings with env_file=".env" configuration
+  - Provide clear error messages when required environment variables are missing
+  - Use .env.example as documentation for required variables
+  - Implement validation checks for environment variables at startup
 
 ## Project Evolution
 - Initially focused on basic functionality
