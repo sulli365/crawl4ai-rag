@@ -1,7 +1,7 @@
 # Active Context: crawl4ai-rag
 
 ## Current Focus
-The project has been restructured from an MCP server to an agentic RAG application focused on website analysis, code generation, and markdown export. The initial implementation of the core architecture and components has been completed. Currently, we are focusing on enhancing the website analyzer with documentation-specific metrics and validation, improving error handling with custom exceptions, and preparing for code generation template enhancements.
+The project has been restructured from an MCP server to an agentic RAG application focused on website analysis, code generation, and markdown export. The initial implementation of the core architecture and components has been completed. Currently, we are focusing on enhancing the website analyzer with documentation-specific metrics and validation, improving error handling with custom exceptions, and preparing for code generation template enhancements. We have also implemented a GitHub-specific documentation scraper to better handle GitHub repositories.
 
 ## Recent Changes
 - Enhanced the website analyzer with documentation-specific metrics:
@@ -16,6 +16,14 @@ The project has been restructured from an MCP server to an agentic RAG applicati
   - Implemented website-wide documentation analysis
 - Improved error handling with custom exceptions and severity levels
 - Added heuristic detection of documentation pages
+- Created GitHub-specific documentation scraper:
+  - Implemented GitHub-specific template (github_docs_scraper.j2)
+  - Added GitHub documentation strategy
+  - Updated CLI with GitHub-specific command
+  - Added Supabase integration for GitHub documentation
+- Updated dependencies:
+  - Added pydantic-settings to support newer Pydantic versions
+  - Fixed import issues in utils/logging.py
 
 ## Current Tasks
 1. **Website Analyzer Enhancement**
@@ -32,7 +40,9 @@ The project has been restructured from an MCP server to an agentic RAG applicati
    - ⏳ Implement additional custom exceptions for other components
 
 3. **Code Generation Template Enhancement**
-   - ⏳ Update templates to handle documentation-specific elements
+   - ✅ Created GitHub-specific documentation scraper template
+   - ✅ Added GitHub documentation strategy
+   - ✅ Updated CLI with GitHub-specific command
    - ⏳ Add error handling blocks to generated code
    - ⏳ Implement metadata tracking in generated code
 
@@ -41,26 +51,32 @@ The project has been restructured from an MCP server to an agentic RAG applicati
    - ⏳ Create basic tests for core components
    - ⏳ Establish CI/CD workflow
 
+5. **Dependency Management**
+   - ✅ Updated dependencies to support newer Pydantic versions
+   - ✅ Fixed import issues in utils/logging.py
+   - ⏳ Ensure all required dependencies are properly installed
+
 ## Next Steps
 1. ✅ Enhance website analyzer with documentation-specific metrics
 2. ✅ Implement documentation validation framework
 3. ✅ Add website-wide documentation analysis
-4. ⏳ Update code generation templates for documentation scraping:
-   - Create specialized templates for API documentation
-   - Add support for parameter table extraction
-   - Implement code block extraction by language
-5. ⏳ Enhance error handling in other components:
+4. ✅ Create specialized templates for GitHub documentation
+5. ⏳ Test GitHub documentation scraper with crawl4ai repository
+6. ⏳ Enhance error handling in other components:
    - Add custom exceptions for code generation
    - Add custom exceptions for markdown export
    - Implement retry logic for transient failures
-6. ⏳ Implement testing infrastructure:
+7. ⏳ Implement testing infrastructure:
    - Create test directory structure
    - Establish base test classes
    - Implement VCR.py configuration for HTTP mocking
-7. ⏳ Improve Supabase integration:
+8. ⏳ Improve Supabase integration:
    - Implement connection pooling
    - Add retry logic for repository methods
    - Enhance error recovery for Supabase disconnects
+9. ⏳ Resolve dependency issues:
+   - Ensure all required packages are properly installed
+   - Fix any import or compatibility issues
 
 ## Active Decisions
 
@@ -122,8 +138,8 @@ We've enhanced the error handling strategy with a more structured approach:
 
 ## Current Blockers
 - Need to implement testing for the new documentation validation features
-- Need to create specialized code generation templates for documentation scraping
-- Need to integrate the documentation analysis with the markdown exporter
+- Need to test the GitHub documentation scraper with the crawl4ai repository
+- Need to resolve dependency issues with crawl4ai and other packages
 - Need to improve Supabase integration with connection pooling and retry logic
 
 ## Recent Insights

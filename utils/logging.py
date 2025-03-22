@@ -8,7 +8,7 @@ from pathlib import Path
 from loguru import logger
 from typing import Dict, Any
 
-from ..config import settings
+from config import settings
 
 
 class InterceptHandler(logging.Handler):

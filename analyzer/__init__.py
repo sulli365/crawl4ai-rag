@@ -20,7 +20,7 @@ async def analyze_website(
     
     Args:
         url: The URL to analyze
-        website_type: The type of website (e.g., "ecommerce", "documentation", "blog")
+        website_type: The type of website (e.g., "ecommerce", "documentation", "blog", "github")
         **kwargs: Additional arguments for the analysis
         
     Returns:
@@ -31,7 +31,7 @@ async def analyze_website(
         website_type = await detect_website_type(url)
     
     # Create strategy
-    strategy = create_strategy(website_type)
+    strategy = create_strategy(website_type, url)
     
     # Analyze website
     analysis = await strategy.analyze(url, **kwargs)
@@ -51,7 +51,7 @@ async def generate_code(
     
     Args:
         analysis: The analysis results
-        website_type: The type of website (e.g., "ecommerce", "documentation", "blog")
+        website_type: The type of website (e.g., "ecommerce", "documentation", "blog", "github")
         
     Returns:
         Generated code as a string
@@ -60,8 +60,11 @@ async def generate_code(
     if website_type is None:
         website_type = analysis.get("website_type", "generic")
     
+    # Get URL from analysis
+    url = analysis.get("root_url", "")
+    
     # Create strategy
-    strategy = create_strategy(website_type)
+    strategy = create_strategy(website_type, url)
     
     # Generate code
     return await strategy.generate_code(analysis)
@@ -76,7 +79,7 @@ async def generate_markdown(
     
     Args:
         analysis: The analysis results
-        website_type: The type of website (e.g., "ecommerce", "documentation", "blog")
+        website_type: The type of website (e.g., "ecommerce", "documentation", "blog", "github")
         
     Returns:
         Dictionary mapping filenames to markdown content
@@ -85,8 +88,11 @@ async def generate_markdown(
     if website_type is None:
         website_type = analysis.get("website_type", "generic")
     
+    # Get URL from analysis
+    url = analysis.get("root_url", "")
+    
     # Create strategy
-    strategy = create_strategy(website_type)
+    strategy = create_strategy(website_type, url)
     
     # Generate markdown
     return await strategy.generate_markdown(analysis)
@@ -110,6 +116,10 @@ async def detect_website_type(url: str) -> str:
     
     # Check URL patterns
     url_lower = url.lower()
+    
+    # Check for GitHub patterns
+    if "github.com" in url_lower:
+        return "github"
     
     # Check for e-commerce patterns
     ecommerce_patterns = [

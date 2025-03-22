@@ -155,6 +155,75 @@ def sync(
         sys.exit(1)
 
 
+@app.command("github")
+def github(
+    repo: str = typer.Argument(..., help="GitHub repository (owner/repo)"),
+    output_dir: str = typer.Option("./output", "--output-dir", "-o", help="Output directory"),
+    save_to_supabase: bool = typer.Option(True, "--save-to-supabase/--no-save-to-supabase", help="Save to Supabase"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Enable verbose output"),
+):
+    """
+    Scrape GitHub documentation and save to files and/or Supabase.
+    """
+    # Set up logging
+    setup_logging()
+    
+    # Set log level based on verbose flag
+    if verbose:
+        import logging
+        logging.getLogger().setLevel(logging.DEBUG)
+    
+    # Run the GitHub scraper
+    typer.echo(f"Scraping GitHub documentation for {repo}...")
+    
+    try:
+        # Construct GitHub URL
+        url = f"https://github.com/{repo}"
+        
+        # Run the async function
+        result = asyncio.run(_analyze(
+            url=url,
+            purpose="Extract GitHub documentation",
+            website_type="github",
+            output_code=True,
+            output_markdown=True,
+            output_dir=output_dir
+        ))
+        
+        # Print the result
+        if result.get("error"):
+            typer.echo(f"Error: {result['error']}")
+            sys.exit(1)
+        
+        # Print success message
+        typer.echo(f"GitHub documentation scraping completed successfully!")
+        
+        # Print markdown files if generated
+        if "markdown_files" in result:
+            typer.echo(f"\nGenerated {len(result['markdown_files'])} markdown files:")
+            for filename, path in result["markdown_files"].items():
+                typer.echo(f"- {path}")
+        
+        # Save to Supabase if requested
+        if save_to_supabase:
+            typer.echo("\nSaving to Supabase...")
+            # Import the necessary modules
+            from supabase.repository import PageRepository
+            from app.embeddings import generate_embedding
+            
+            # Run the async function to save to Supabase
+            asyncio.run(_save_to_supabase(result, url))
+            
+            typer.echo("Saved to Supabase successfully!")
+    
+    except Exception as e:
+        typer.echo(f"Error: {str(e)}")
+        if verbose:
+            import traceback
+            typer.echo(traceback.format_exc())
+        sys.exit(1)
+
+
 @app.command("detect")
 def detect(
     url: str = typer.Argument(..., help="URL to detect type"),
@@ -280,6 +349,67 @@ async def _sync(
     except Exception as e:
         logger.error(f"Error syncing sources: {str(e)}")
         return {"error": str(e)}
+
+
+async def _save_to_supabase(result: Dict[str, Any], url: str) -> bool:
+    """
+    Save analysis results to Supabase.
+    
+    Args:
+        result: Analysis results
+        url: URL of the website
+        
+    Returns:
+        True if successful, False otherwise
+    """
+    try:
+        from datetime import datetime, timezone
+        from supabase.repository import PageRepository
+        from app.embeddings import generate_embedding
+        
+        # Create repository
+        repo = PageRepository()
+        
+        # Get analysis
+        analysis = result.get("analysis", {})
+        
+        # Get markdown content
+        markdown_files = result.get("markdown_files", {})
+        
+        # Save each markdown file to Supabase
+        for filename, content in markdown_files.items():
+            # Generate a URL for the file
+            file_url = f"{url}#{filename}"
+            
+            # Generate a title
+            title = f"{filename} - GitHub Documentation"
+            
+            # Generate a summary
+            summary = content[:200] + "..." if len(content) > 200 else content
+            
+            # Generate metadata
+            metadata = {
+                "source": "github",
+                "filename": filename,
+                "url": url,
+                "crawled_at": datetime.now(timezone.utc).isoformat(),
+                "content_length": len(content)
+            }
+            
+            # Save to Supabase
+            await repo.save_page(
+                url=file_url,
+                content=content,
+                title=title,
+                summary=summary,
+                metadata=metadata
+            )
+        
+        return True
+        
+    except Exception as e:
+        logger.error(f"Error saving to Supabase: {str(e)}")
+        return False
 
 
 if __name__ == "__main__":

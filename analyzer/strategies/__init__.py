@@ -4,6 +4,7 @@ Scraping strategies for different website types and purposes.
 
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional, Tuple
+from urllib.parse import urlparse
 
 from ...utils.logging import get_logger
 
@@ -710,21 +711,32 @@ if __name__ == "__main__":
         return code
 
 
+# Import GitHub strategy
+from .github_strategy import GitHubDocumentationStrategy
+
 # Factory function to create the appropriate strategy
-def create_strategy(website_type: str) -> ScrapingStrategy:
+def create_strategy(website_type: str, url: str = None) -> ScrapingStrategy:
     """
-    Create a scraping strategy based on the website type.
+    Create a scraping strategy based on the website type and URL.
     
     Args:
-        website_type: The type of website (e.g., "ecommerce", "documentation", "blog")
+        website_type: The type of website (e.g., "ecommerce", "documentation", "blog", "github")
+        url: The URL of the website (optional)
         
     Returns:
         A scraping strategy instance
     """
+    # Check if this is a GitHub URL and the website type is documentation
+    if url and website_type.lower() == "documentation":
+        parsed = urlparse(url)
+        if parsed.netloc == "github.com" or parsed.netloc.endswith(".github.com"):
+            return GitHubDocumentationStrategy()
+    
     strategies = {
         "ecommerce": EcommerceStrategy,
         "documentation": DocumentationStrategy,
         "blog": BlogStrategy,
+        "github": GitHubDocumentationStrategy,
         "generic": GenericStrategy
     }
     
