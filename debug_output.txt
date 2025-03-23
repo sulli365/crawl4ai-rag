@@ -1,0 +1,83 @@
+[ERROR]... ╫ https://github.com/unclecode/crawl4ai... | Error: 
+Traceback (most recent call last):
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\crawl4ai\async_webcrawler.py", line 386, in arun
+    self.logger.url_status(
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\crawl4ai\async_logger.py", line 225, in url_status
+    self._log(
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\crawl4ai\async_logger.py", line 182, in _log
+    print(log_line)
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 47, in write
+    self.__convertor.write(text)
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 177, in write
+    self.write_and_convert(text)
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 202, in write_and_convert
+    self.write_plain_text(text, cursor, start)
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 210, in write_plain_text
+    self.wrapped.write(text[start:end])
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 47, in write
+    self.__convertor.write(text)
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 177, in write
+    self.write_and_convert(text)
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 205, in write_and_convert
+    self.write_plain_text(text, cursor, len(text))
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 210, in write_plain_text
+    self.wrapped.write(text[start:end])
+  File "C:\Users\sfsul\Python\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2193' in position 11: character maps to <undefined>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\debug_crawl_result.py", line 54, in <module>
+    asyncio.run(main())
+  File "C:\Users\sfsul\Python\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\sfsul\Python\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sfsul\Python\Lib\asyncio\base_events.py", line 686, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\debug_crawl_result.py", line 31, in main
+    result = await crawler.arun(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\crawl4ai\deep_crawling\base_strategy.py", line 42, in wrapped_arun
+    return await original_arun(url, config=config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\crawl4ai\async_webcrawler.py", line 467, in arun
+    self.logger.error_status(
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\crawl4ai\async_logger.py", line 253, in error_status
+    self._log(
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\crawl4ai\async_logger.py", line 182, in _log
+    print(log_line)
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 47, in write
+    self.__convertor.write(text)
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 177, in write
+    self.write_and_convert(text)
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 202, in write_and_convert
+    self.write_plain_text(text, cursor, start)
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 210, in write_plain_text
+    self.wrapped.write(text[start:end])
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 47, in write
+    self.__convertor.write(text)
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 177, in write
+    self.write_and_convert(text)
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 205, in write_and_convert
+    self.write_plain_text(text, cursor, len(text))
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 210, in write_plain_text
+    self.wrapped.write(text[start:end])
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 47, in write
+    self.__convertor.write(text)
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 177, in write
+    self.write_and_convert(text)
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 205, in write_and_convert
+    self.write_plain_text(text, cursor, len(text))
+  File "C:\Users\sfsul\Documents\Cline\crawl4ai-rag\.venv\Lib\site-packages\colorama\ansitowin32.py", line 210, in write_plain_text
+    self.wrapped.write(text[start:end])
+  File "C:\Users\sfsul\Python\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 0-120: character maps to <undefined>

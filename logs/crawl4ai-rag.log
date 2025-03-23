@@ -1,0 +1,109 @@
+2025-03-22 01:25:55 | INFO     | utils.logging:setup_logging:83 - Logging configured successfully
+2025-03-22 01:25:55 | INFO     | utils.logging:setup_logging:83 - Logging configured successfully
+2025-03-22 01:25:59 | ERROR    | analyzer.website_analyzer:analyze_url:122 - Error analyzing https://github.com/unclecode/crawl4ai: The 'markdown_v2' attribute is deprecated and has been removed. Please use 'markdown' instead, which now returns a MarkdownGenerationResult, with
+            following properties:
+            - raw_markdown: The raw markdown string
+            - markdown_with_citations: The markdown string with citations
+            - references_markdown: The markdown string with references
+            - fit_markdown: The markdown string with fit text
+            
+2025-03-22 01:26:01 | ERROR    | analyzer.website_analyzer:analyze_url:122 - Error analyzing https://github.com/unclecode/crawl4ai: The 'markdown_v2' attribute is deprecated and has been removed. Please use 'markdown' instead, which now returns a MarkdownGenerationResult, with
+            following properties:
+            - raw_markdown: The raw markdown string
+            - markdown_with_citations: The markdown string with citations
+            - references_markdown: The markdown string with references
+            - fit_markdown: The markdown string with fit text
+            
+2025-03-22 01:26:03 | ERROR    | analyzer.website_analyzer:analyze_url:122 - Error analyzing https://github.com/unclecode/crawl4ai: The 'markdown_v2' attribute is deprecated and has been removed. Please use 'markdown' instead, which now returns a MarkdownGenerationResult, with
+            following properties:
+            - raw_markdown: The raw markdown string
+            - markdown_with_citations: The markdown string with citations
+            - references_markdown: The markdown string with references
+            - fit_markdown: The markdown string with fit text
+            
+2025-03-22 01:26:03 | INFO     | exporters.markdown_exporter:write_markdown_files:128 - Wrote markdown file: ./output/github_crawl4ai\error.md
+2025-03-22 01:26:04 | ERROR    | db_client.repository:get_embedding:54 - Error generating embedding: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-********************************************************************************************************************************************************cH8A. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2025-03-22 01:26:05 | ERROR    | db_client.repository:save_page:114 - Error saving page https://github.com/unclecode/crawl4ai#error.md: {'code': '23505', 'details': 'Key (url, chunk_number)=(https://github.com/unclecode/crawl4ai#error.md, 0) already exists.', 'hint': None, 'message': 'duplicate key value violates unique constraint "crawl4ai_site_pages_url_chunk_number_key"'}
+2025-03-22 01:26:05 | ERROR    | __main__:_save_to_supabase:411 - Error saving to Supabase: {'code': '23505', 'details': 'Key (url, chunk_number)=(https://github.com/unclecode/crawl4ai#error.md, 0) already exists.', 'hint': None, 'message': 'duplicate key value violates unique constraint "crawl4ai_site_pages_url_chunk_number_key"'}
+2025-03-22 01:30:33 | INFO     | utils.logging:setup_logging:83 - Logging configured successfully
+2025-03-22 01:30:33 | INFO     | utils.logging:setup_logging:83 - Logging configured successfully
+2025-03-22 01:30:36 | ERROR    | analyzer.website_analyzer:analyze_url:122 - Error analyzing https://github.com/unclecode/crawl4ai: The 'markdown_v2' attribute is deprecated and has been removed. Please use 'markdown' instead, which now returns a MarkdownGenerationResult, with
+            following properties:
+            - raw_markdown: The raw markdown string
+            - markdown_with_citations: The markdown string with citations
+            - references_markdown: The markdown string with references
+            - fit_markdown: The markdown string with fit text
+            
+2025-03-22 01:30:38 | ERROR    | analyzer.website_analyzer:analyze_url:122 - Error analyzing https://github.com/unclecode/crawl4ai: The 'markdown_v2' attribute is deprecated and has been removed. Please use 'markdown' instead, which now returns a MarkdownGenerationResult, with
+            following properties:
+            - raw_markdown: The raw markdown string
+            - markdown_with_citations: The markdown string with citations
+            - references_markdown: The markdown string with references
+            - fit_markdown: The markdown string with fit text
+            
+2025-03-22 01:30:39 | ERROR    | analyzer.website_analyzer:analyze_url:122 - Error analyzing https://github.com/unclecode/crawl4ai: The 'markdown_v2' attribute is deprecated and has been removed. Please use 'markdown' instead, which now returns a MarkdownGenerationResult, with
+            following properties:
+            - raw_markdown: The raw markdown string
+            - markdown_with_citations: The markdown string with citations
+            - references_markdown: The markdown string with references
+            - fit_markdown: The markdown string with fit text
+            
+2025-03-22 01:30:39 | INFO     | exporters.markdown_exporter:write_markdown_files:128 - Wrote markdown file: ./output/github_crawl4ai\error.md
+2025-03-22 01:30:42 | ERROR    | db_client.repository:save_page:114 - Error saving page https://github.com/unclecode/crawl4ai#error.md: {'code': '23505', 'details': 'Key (url, chunk_number)=(https://github.com/unclecode/crawl4ai#error.md, 0) already exists.', 'hint': None, 'message': 'duplicate key value violates unique constraint "crawl4ai_site_pages_url_chunk_number_key"'}
+2025-03-22 01:30:42 | ERROR    | __main__:_save_to_supabase:411 - Error saving to Supabase: {'code': '23505', 'details': 'Key (url, chunk_number)=(https://github.com/unclecode/crawl4ai#error.md, 0) already exists.', 'hint': None, 'message': 'duplicate key value violates unique constraint "crawl4ai_site_pages_url_chunk_number_key"'}
+2025-03-22 01:31:04 | INFO     | utils.logging:setup_logging:83 - Logging configured successfully
+2025-03-22 01:31:04 | INFO     | utils.logging:setup_logging:83 - Logging configured successfully
+2025-03-22 01:31:07 | ERROR    | analyzer.website_analyzer:analyze_url:122 - Error analyzing https://github.com/unclecode/crawl4ai: 'CrawlResult' object has no attribute 'title'
+2025-03-22 01:31:09 | ERROR    | analyzer.website_analyzer:analyze_url:122 - Error analyzing https://github.com/unclecode/crawl4ai: 'CrawlResult' object has no attribute 'title'
+2025-03-22 01:31:11 | ERROR    | analyzer.website_analyzer:analyze_url:122 - Error analyzing https://github.com/unclecode/crawl4ai: 'CrawlResult' object has no attribute 'title'
+2025-03-22 01:31:11 | INFO     | exporters.markdown_exporter:write_markdown_files:128 - Wrote markdown file: ./output/github_crawl4ai\error.md
+2025-03-22 01:31:13 | ERROR    | db_client.repository:save_page:114 - Error saving page https://github.com/unclecode/crawl4ai#error.md: {'code': '23505', 'details': 'Key (url, chunk_number)=(https://github.com/unclecode/crawl4ai#error.md, 0) already exists.', 'hint': None, 'message': 'duplicate key value violates unique constraint "crawl4ai_site_pages_url_chunk_number_key"'}
+2025-03-22 01:31:13 | ERROR    | __main__:_save_to_supabase:411 - Error saving to Supabase: {'code': '23505', 'details': 'Key (url, chunk_number)=(https://github.com/unclecode/crawl4ai#error.md, 0) already exists.', 'hint': None, 'message': 'duplicate key value violates unique constraint "crawl4ai_site_pages_url_chunk_number_key"'}
+2025-03-23 17:40:38 | INFO     | utils.logging:setup_logging:83 - Logging configured successfully
+2025-03-23 17:40:38 | INFO     | analyzer.github_mcp:sync_repository:58 - Syncing repository unclecode/crawl4ai (branch: main)
+2025-03-23 17:40:38 | ERROR    | utils.mcp_client:use_github_mcp:49 - Error using GitHub MCP tool search_repositories:   File "<string>", line 1
+    from claude_dev.mcp import use_mcp_tool; import asyncio, json; async def run(): print(await use_mcp_tool('github.com/modelcontextprotocol/servers/tree/main/src/github', 'search_repositories', {query: repo:unclecode/crawl4ai})); asyncio.run(run())
+                                                                   ^^^^^
+SyntaxError: invalid syntax
+
+2025-03-23 17:40:38 | ERROR    | analyzer.github_mcp:sync_repository:66 - Error getting repository info:   File "<string>", line 1
+    from claude_dev.mcp import use_mcp_tool; import asyncio, json; async def run(): print(await use_mcp_tool('github.com/modelcontextprotocol/servers/tree/main/src/github', 'search_repositories', {query: repo:unclecode/crawl4ai})); asyncio.run(run())
+                                                                   ^^^^^
+SyntaxError: invalid syntax
+
+2025-03-23 17:40:38 | INFO     | __main__:sync_github:112 - Synced 0 items from GitHub repository unclecode/crawl4ai to Supabase
+2025-03-23 18:46:05 | INFO     | utils.logging:setup_logging:83 - Logging configured successfully
+2025-03-23 18:46:06 | INFO     | analyzer.github_mcp:sync_repository:58 - Syncing repository unclecode/crawl4ai (branch: main)
+2025-03-23 18:46:06 | ERROR    | utils.mcp_client:use_github_mcp:52 - Error using GitHub MCP tool search_repositories:   File "<string>", line 1
+    from claude_dev.mcp import use_mcp_tool; import asyncio, json; async def run(): print(await use_mcp_tool('github.com/modelcontextprotocol/servers/tree/main/src/github', 'search_repositories', {query: repo:unclecode/crawl4ai})); asyncio.run(run())
+                                                                   ^^^^^
+SyntaxError: invalid syntax
+
+2025-03-23 18:46:06 | ERROR    | analyzer.github_mcp:sync_repository:66 - Error getting repository info:   File "<string>", line 1
+    from claude_dev.mcp import use_mcp_tool; import asyncio, json; async def run(): print(await use_mcp_tool('github.com/modelcontextprotocol/servers/tree/main/src/github', 'search_repositories', {query: repo:unclecode/crawl4ai})); asyncio.run(run())
+                                                                   ^^^^^
+SyntaxError: invalid syntax
+
+2025-03-23 18:46:06 | INFO     | __main__:sync_github:112 - Synced 0 items from GitHub repository unclecode/crawl4ai to Supabase
+2025-03-23 18:48:15 | INFO     | utils.logging:setup_logging:83 - Logging configured successfully
+2025-03-23 18:48:15 | INFO     | analyzer.github_mcp:sync_repository:58 - Syncing repository unclecode/crawl4ai (branch: main)
+2025-03-23 18:48:15 | ERROR    | utils.mcp_client:use_github_mcp:53 - Error using GitHub MCP tool search_repositories:   File "<string>", line 1
+    from claude_dev.mcp import use_mcp_tool; import asyncio, json; async def run():     result = await use_mcp_tool('github.com/modelcontextprotocol/servers/tree/main/src/github', 'search_repositories', {query: repo:unclecode/crawl4ai});     print(json.dumps(result)); asyncio.run(run())
+                                                                   ^^^^^
+SyntaxError: invalid syntax
+
+2025-03-23 18:48:15 | ERROR    | analyzer.github_mcp:sync_repository:66 - Error getting repository info:   File "<string>", line 1
+    from claude_dev.mcp import use_mcp_tool; import asyncio, json; async def run():     result = await use_mcp_tool('github.com/modelcontextprotocol/servers/tree/main/src/github', 'search_repositories', {query: repo:unclecode/crawl4ai});     print(json.dumps(result)); asyncio.run(run())
+                                                                   ^^^^^
+SyntaxError: invalid syntax
+
+2025-03-23 18:48:15 | INFO     | __main__:sync_github:112 - Synced 0 items from GitHub repository unclecode/crawl4ai to Supabase
+2025-03-23 18:49:48 | INFO     | utils.logging:setup_logging:83 - Logging configured successfully
+2025-03-23 18:49:48 | INFO     | analyzer.github_mcp:sync_repository:58 - Syncing repository unclecode/crawl4ai (branch: main)
+2025-03-23 18:49:48 | WARNING  | utils.mcp_client:use_github_mcp:49 - claude_dev.mcp module not found, using mock response
+2025-03-23 18:49:48 | WARNING  | utils.mcp_client:use_github_mcp:49 - claude_dev.mcp module not found, using mock response
+2025-03-23 18:49:50 | INFO     | db_client.repository:save_page:110 - Saved page: https://github.com/unclecode/crawl4ai/blob/main/README.md (chunk 0)
+2025-03-23 18:49:50 | INFO     | analyzer.github_mcp:_process_readme:174 - Processed README for unclecode/crawl4ai
+2025-03-23 18:49:50 | WARNING  | utils.mcp_client:use_github_mcp:49 - claude_dev.mcp module not found, using mock response
+2025-03-23 18:49:50 | INFO     | analyzer.github_mcp:sync_repository:83 - Repository sync completed. Processed 1 items.
+2025-03-23 18:49:50 | INFO     | __main__:sync_github:112 - Synced 1 items from GitHub repository unclecode/crawl4ai to Supabase

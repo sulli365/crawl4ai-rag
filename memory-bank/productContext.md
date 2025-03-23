@@ -38,6 +38,7 @@ The crawl4ai-rag project addresses the challenge of efficiently extracting, anal
 - **Adaptability**: Generates code that can be modified and extended for specific needs
 - **Documentation**: Automatically structures scraped content into readable, usable formats
 - **Persistence**: Maintains a database of previously crawled pages for faster retrieval and analysis
+- **Enhanced API Access**: Leverages MCP servers for structured access to GitHub repositories and web content
 
 ## User Experience Goals
 - **Simplicity**: Clear, straightforward interface for specifying scraping requirements
@@ -52,3 +53,5 @@ The crawl4ai-rag project addresses the challenge of efficiently extracting, anal
 - **Compatibility**: Generated code should work with current Python ecosystem
 - **Maintenance**: Easy updates to accommodate changes in the crawl4ai library
 - **Privacy**: Careful handling of potentially sensitive scraped content
+- **API Limitations**: Respect rate limits and quotas of MCP servers and underlying APIs
+- **Fallback Mechanisms**: Provide alternatives when MCP servers are unavailable

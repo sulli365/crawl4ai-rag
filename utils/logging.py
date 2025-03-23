@@ -65,7 +65,7 @@ def setup_logging() -> None:
     
     # Apply configuration
     for handler in config["handlers"]:
-        logger.configure(**handler)
+        logger.add(**handler)
 
     # Intercept standard logging
     logging.basicConfig(handlers=[InterceptHandler()], level=0, force=True)

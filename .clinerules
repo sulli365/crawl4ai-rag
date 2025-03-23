@@ -20,6 +20,9 @@
 - Update .clinerules when discovering new patterns or preferences
 - Follow test-driven development where appropriate
 - Keep commits focused and with descriptive messages
+- Always activate the virtual environment before running Python commands:
+  - On Windows: `.\.venv\Scripts\activate`
+  - On Unix/Mac: `source .venv/bin/activate`
 
 ## Technical Decisions
 
@@ -93,6 +96,15 @@
 - Supabase has query limits that need to be managed
 - Memory usage can be high when processing large websites
 
+### System Compatibility
+- Windows console encoding conflicts with Unicode output
+  - Default cp1252 encoding can't handle crawl4ai's arrows/characters
+  - Colorama ANSI codes conflict with pipe redirection
+  - Solutions:
+    - Set `PYTHONUTF8=1` and `chcp 65001`
+    - Disable Colorama with `NO_COLOR=1`
+    - Use `python -X utf8` flag
+
 ### Security
 - API keys need to be securely managed
   - Store API keys in .env file, never in code
@@ -109,6 +121,32 @@
   - Provide clear error messages when required environment variables are missing
   - Use .env.example as documentation for required variables
   - Implement validation checks for environment variables at startup
+
+## Diagram Standards
+
+### Mermaid Syntax Rules
+1. **Node Labels**:
+   - Use simple identifiers: `[NodeName]` not `[Node Name (Type)]`
+   - Example: `CR[CrawlResult]` instead of `CR[CrawlResult Object]`
+
+2. **Flowchart Structure**:
+   ```mermaid
+   flowchart TD
+       A[Parent] --> B[Child]
+       B --> C[Grandchild]
+   ```
+
+3. **Special Characters**:
+   - Avoid: `()`, `-`, `{}` in node names
+   - Use underscores for spaces: `page_title` not `page title`
+
+4. **Color Guidelines**:
+   - Use high-contrast combinations:
+   ```mermaid
+   flowchart TD
+       A[#black]-.->B[#white]
+       A-->C[#yellow]
+   ```
 
 ## Project Evolution
 - Initially focused on basic functionality

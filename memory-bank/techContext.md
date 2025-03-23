@@ -9,6 +9,9 @@
 - **PostgreSQL**: Underlying database technology used by Supabase
 - **OpenAI Embeddings**: For generating vector embeddings of crawled content
 - **LangChain**: For RAG (Retrieval-Augmented Generation) capabilities
+- **MCP Servers**: For enhanced API access and content retrieval
+  - **GitHub MCP Server**: For structured GitHub repository access
+  - **Fetch MCP Server**: For web content retrieval and parsing
 
 ### Key Libraries
 - **requests/httpx**: For HTTP requests
@@ -19,6 +22,7 @@
 - **loguru**: For enhanced logging capabilities
 - **typer/click**: For CLI interface
 - **jinja2**: For code template generation
+- **modelcontextprotocol**: For MCP server integration
 
 ## Development Environment
 
@@ -35,6 +39,7 @@ SUPABASE_URL=your-supabase-url
 SUPABASE_KEY=your-supabase-key
 OPENAI_API_KEY=your-openai-api-key
 LOG_LEVEL=INFO
+GITHUB_TOKEN=your-github-token  # For GitHub MCP server authentication
 ```
 
 ### Environment Variable Security
@@ -101,7 +106,8 @@ def analyze_and_generate(
     purpose: str,
     output_code: bool = True,
     output_markdown: bool = False,
-    markdown_output_dir: Optional[str] = None
+    markdown_output_dir: Optional[str] = None,
+    use_mcp: bool = True
 ) -> Dict[str, Union[str, List[str]]]:
     """
     Analyze websites and generate code/markdown based on purpose.
@@ -112,6 +118,7 @@ def analyze_and_generate(
         output_code: Whether to return generated code
         output_markdown: Whether to generate markdown
         markdown_output_dir: Directory to write markdown files (if None, returns content)
+        use_mcp: Whether to use MCP servers for content retrieval
         
     Returns:
         Dictionary containing generated code and/or paths to markdown files
@@ -122,7 +129,8 @@ def analyze_and_generate(
 def sync_website_to_supabase(
     url: str,
     max_depth: int = 2,
-    force_update: bool = False
+    force_update: bool = False,
+    use_mcp: bool = True
 ) -> int:
     """
     Crawl website and sync pages to Supabase.
@@ -131,6 +139,30 @@ def sync_website_to_supabase(
         url: Root URL to crawl
         max_depth: Maximum crawl depth
         force_update: Whether to update existing pages
+        use_mcp: Whether to use MCP servers for content retrieval
+        
+    Returns:
+        Number of pages synced
+    """
+    pass
+
+# GitHub repository synchronization
+def sync_github_repository(
+    owner: str,
+    repo: str,
+    branch: str = "main",
+    include_issues: bool = False,
+    include_pull_requests: bool = False
+) -> int:
+    """
+    Sync GitHub repository content to Supabase using MCP.
+    
+    Args:
+        owner: Repository owner (username or organization)
+        repo: Repository name
+        branch: Branch to sync (default: main)
+        include_issues: Whether to include issues
+        include_pull_requests: Whether to include pull requests
         
     Returns:
         Number of pages synced
@@ -149,6 +181,9 @@ crawl4ai-rag analyze --url https://example.com --purpose "Convert documentation 
 
 # Sync website to Supabase
 crawl4ai-rag sync --url https://example.com --depth 3
+
+# Sync GitHub repository to Supabase
+crawl4ai-rag sync-github --owner username --repo repository --branch main --include-issues
 ```
 
 ## Technical Constraints
@@ -158,12 +193,16 @@ crawl4ai-rag sync --url https://example.com --depth 3
 - Vector embeddings generation requires API calls to OpenAI
 - Supabase has query limits that need to be managed
 - Memory usage can be high when processing large websites
+- MCP server requests have their own rate limits and quotas
+- GitHub API (via MCP) has rate limiting that needs to be respected
 
 ### Security Considerations
 - API keys need to be securely managed
 - Crawled content may contain sensitive information
 - Rate limiting and respectful crawling practices must be followed
 - User-provided URLs must be validated and sanitized
+- GitHub tokens require appropriate scopes for repository access
+- MCP server authentication must be properly configured
 
 ### Scalability Considerations
 - Supabase table size limits
@@ -187,6 +226,7 @@ crawl4ai-rag sync --url https://example.com --depth 3
 - Use VCR or similar for HTTP request recording/playback
 - Create fixture data for website content
 - Mock Supabase responses for predictable testing
+- Mock MCP server responses for GitHub and Fetch operations
 
 ## Deployment Considerations
 

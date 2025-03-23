@@ -17,6 +17,7 @@ crawl4ai-rag is an agentic RAG (Retrieval-Augmented Generation) application buil
 - **Flexible Output Options**: Return content directly or write to files based on user preference
 - **Supabase Integration**: Store and retrieve crawled pages using Supabase for persistence
 - **Automatic Updates**: Monitor source websites for changes and update the database accordingly
+- **MCP Integration**: Leverage Model Context Protocol servers for enhanced API access and content retrieval
 
 ## Technical Requirements
 - Python package structure for easy import and use in other projects
@@ -34,5 +35,5 @@ crawl4ai-rag is an agentic RAG (Retrieval-Augmented Generation) application buil
 ## Non-Goals
 - Creating a web interface or GUI
 - Supporting non-Python environments
-- Implementing an MCP server (as originally planned)
+- Implementing an MCP server (as originally planned, but we will use existing MCP servers)
 - Building a general-purpose web crawler

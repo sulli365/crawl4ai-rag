@@ -2,15 +2,24 @@
 
 ## System Architecture
 
-The crawl4ai-rag system follows a modular architecture organized around core capabilities:
+The crawl4ai-rag system follows a modular architecture organized around core capabilities, now enhanced with MCP integration:
 
 ```mermaid
 flowchart TD
     User([User]) -->|Provides URLs & Purpose| Input[Input Handler]
     Input --> Analyzer[Website Analyzer]
+    
+    Analyzer --> MCP[MCP Integration]
+    MCP -->|GitHub API| GithubMCP[GitHub MCP Server]
+    MCP -->|Web Content| FetchMCP[Fetch MCP Server]
+    
     Analyzer --> DB[(Supabase DB)]
     Analyzer --> CodeGen[Code Generator]
     Analyzer --> MarkdownGen[Markdown Generator]
+    
+    GithubMCP --> Analyzer
+    FetchMCP --> Analyzer
+    
     CodeGen --> Output[Output Handler]
     MarkdownGen --> Output
     Output -->|Returns Code/Markdown| User
@@ -24,6 +33,12 @@ flowchart TD
         CodeGen
         MarkdownGen
     end
+    
+    subgraph "MCP Services"
+        MCP
+        GithubMCP
+        FetchMCP
+    end
 ```
 
 ## Key Components
@@ -34,10 +49,18 @@ flowchart TD
 - Configures output preferences (code, markdown, or both)
 
 ### 2. Website Analyzer
-- Crawls specified websites to understand structure
+- Analyzes websites to understand structure
 - Identifies key elements based on scraping purpose
 - Builds internal representation of website structure
 - Interfaces with Supabase for storing and retrieving crawled pages
+- Coordinates with MCP servers for specialized content retrieval
+
+### 3. MCP Integration
+- Leverages Model Context Protocol servers for enhanced capabilities:
+  - **GitHub MCP Server**: Provides structured access to GitHub repositories
+  - **Fetch MCP Server**: Handles web content retrieval with built-in parsing
+- Manages authentication and request handling for MCP services
+- Provides fallback mechanisms when MCP services are unavailable
 
 ### 3. Code Generator
 - Transforms website analysis into Python code
@@ -133,22 +156,50 @@ class PageRepository:
         pass
 ```
 
+### Adapter Pattern
+Used for integrating MCP services with the core system.
+
+```python
+class McpAdapter:
+    def __init__(self, server_name):
+        self.server_name = server_name
+        
+    async def fetch_content(self, url, **options):
+        # Use appropriate MCP tool based on URL and server
+        pass
+        
+class GithubMcpAdapter(McpAdapter):
+    async def fetch_repository(self, owner, repo):
+        # Use github MCP server to fetch repository data
+        pass
+        
+    async def fetch_file_contents(self, owner, repo, path, branch="main"):
+        # Use github MCP server to fetch file contents
+        pass
+```
+
 ## Data Flow
 
 1. **Input Processing**:
    - User provides URLs and scraping purpose
    - System validates input and configures processing
 
-2. **Website Analysis**:
-   - System checks Supabase for existing crawl data
-   - If needed, crawls website to understand structure
-   - Analyzes content based on scraping purpose
+2. **Content Retrieval**:
+   - System checks Supabase for existing data
+   - For GitHub URLs, uses GitHub MCP server to fetch repository data
+   - For web content, uses Fetch MCP server or falls back to direct crawling
+   - Stores retrieved content in Supabase
 
-3. **Generation Phase**:
+3. **Website Analysis**:
+   - Analyzes content based on scraping purpose
+   - Identifies key elements and structure
+   - Generates metadata and embeddings
+
+4. **Generation Phase**:
    - Creates Python code for the specific scraping task
    - Optionally processes content into markdown
 
-4. **Output Delivery**:
+5. **Output Delivery**:
    - Returns generated code to user
    - Optionally writes markdown to specified location
    - Provides status and any error information
@@ -205,3 +256,5 @@ The system is designed with several extension points:
 3. **Output Formats**: Add support for formats beyond code and markdown
 4. **Scraping Strategies**: Implement new strategies for different scraping purposes
 5. **Database Providers**: Extend beyond Supabase to other storage solutions
+6. **MCP Integrations**: Add support for additional MCP servers and capabilities
+7. **Content Processors**: Implement specialized processors for different content types

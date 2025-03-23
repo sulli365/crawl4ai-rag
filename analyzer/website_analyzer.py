@@ -84,7 +84,7 @@ class WebsiteAnalyzer:
                     return {"error": f"Failed to crawl {url}: {result.error_message}"}
                 
                 # Extract and analyze structure
-                markdown_content = result.markdown_v2.raw_markdown if extract_text else ""
+                markdown_content = result.markdown.raw_markdown if extract_text else ""
                 structure_analysis = self._analyze_structure(markdown_content) if extract_text else {}
                 
                 # Validate documentation structure and code blocks if this is a documentation page
