@@ -1,14 +1,9 @@
-"""
-Test script for GitHub MCP integration.
-"""
-
+# test_github_mcp.py
 import asyncio
-import os
 import sys
-import time
 from datetime import datetime
 
-from analyzer.github_mcp import sync_github_repository
+from github_mcp import sync_github_repository
 from utils.logging import setup_logging, get_logger
 
 setup_logging()
@@ -34,8 +29,6 @@ class ProgressIndicator:
             sys.stdout.flush()
             i += 1
             await asyncio.sleep(0.1)
-        
-        # Clear the spinner line
         sys.stdout.write("\r" + " " * (len(self.message) + 10) + "\r")
         sys.stdout.flush()
     
@@ -62,14 +55,10 @@ async def test_github_mcp():
     print(f"Timeout set to {SYNC_TIMEOUT} seconds")
     print("=" * 50)
     
-    # Create a progress indicator
     progress = ProgressIndicator(f"Syncing repository {owner}/{repo}")
     
     try:
-        # Start the progress indicator
         progress.start()
-        
-        # Create a task for the repository sync with a timeout
         sync_task = asyncio.create_task(
             sync_github_repository(
                 owner=owner,
@@ -79,23 +68,17 @@ async def test_github_mcp():
                 include_pull_requests=False
             )
         )
-        
-        # Wait for the task to complete with a timeout
         try:
             count = await asyncio.wait_for(sync_task, timeout=SYNC_TIMEOUT)
             print(f"\nSynced {count} items from GitHub repository {owner}/{repo} to Supabase")
             print(f"Completed at: {datetime.now().strftime('%H:%M:%S')}")
-            
         except asyncio.TimeoutError:
             print(f"\nTimeout after {SYNC_TIMEOUT} seconds. The operation may still be running in the background.")
             print("Check the logs for more information.")
-            
     except Exception as e:
         print(f"\nError: {str(e)}")
         logger.error(f"Error syncing repository: {str(e)}")
-        
     finally:
-        # Stop the progress indicator
         progress.stop()
         print("=" * 50)
 
