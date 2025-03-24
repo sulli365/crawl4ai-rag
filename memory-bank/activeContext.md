@@ -29,6 +29,9 @@ The project has been restructured from an MCP server to an agentic RAG applicati
   - Updated CLI to support multiple repositories
   - Added direct communication with GitHub MCP server
   - Improved error handling for MCP server interactions
+  - Implemented HTTP-based approach for more reliable communication
+  - Added retry logic for transient failures
+  - Created test script for verification
 - Updated dependencies:
   - Added pydantic-settings to support newer Pydantic versions
   - Fixed import issues in utils/logging.py

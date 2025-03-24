@@ -60,6 +60,9 @@ The project has progressed from the initial implementation phase to the enhancem
   - Updated CLI to support multiple repositories via --repos option
   - Added direct communication with GitHub MCP server using npx
   - Improved error handling with fallback to mock responses
+  - Implemented HTTP-based approach for more reliable communication
+  - Added retry logic for transient failures in all MCP operations
+  - Created test script for verification with the crawl4ai repository
 
 ## What's Left to Build
 
