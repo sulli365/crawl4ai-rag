@@ -60,11 +60,14 @@ The project has progressed from the initial implementation phase to the enhancem
   - Updated CLI to support multiple repositories via --repos option
   - Added direct communication with GitHub MCP server using npx
   - Improved error handling with fallback to mock responses
-  - Implemented subprocess-based approach for more reliable communication
-  - Added retry logic for transient failures in all MCP operations
-  - Created test script for verification with the crawl4ai repository
-  - Implemented SubprocessManager for MCP server communication
-  - Updated GitHubMcpService to use subprocess approach
+  - Started implementing subprocess-based approach for more reliable communication:
+    - Created SubprocessManager for MCP server communication
+    - Updated GitHubMcpService to use subprocess approach
+    - Removed references to Cline's MCP implementation (cline.mcp)
+    - Modified utils/mcp_client.py to use subprocess approach
+    - Added proper request formatting for MCP server communication
+    - Added timeout handling and improved error reporting
+    - Still encountering challenges with subprocess communication
 
 ## What's Left to Build
 

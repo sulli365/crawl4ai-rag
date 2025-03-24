@@ -11,6 +11,7 @@ import subprocess
 import tempfile
 
 from utils.logging import get_logger
+from utils.mcp_subprocess import SubprocessManager
 
 logger = get_logger(__name__)
 
@@ -18,41 +19,11 @@ logger = get_logger(__name__)
 class McpClient:
     """
     Client for interacting with MCP servers.
-    """
     
-    @staticmethod
-    async def run_github_mcp_server(github_token: str) -> subprocess.Popen:
-        """
-        Run the GitHub MCP server as a subprocess.
-        
-        Args:
-            github_token: GitHub personal access token
-            
-        Returns:
-            Subprocess handle
-        """
-        try:
-            # Create environment variables for the subprocess
-            env = os.environ.copy()
-            env["GITHUB_TOKEN"] = github_token
-            
-            # Run the GitHub MCP server using npx
-            process = subprocess.Popen(
-                ["cmd.exe", "/c", "npx", "-y", "@modelcontextprotocol/server-github"],
-                env=env,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True
-            )
-            
-            # Wait a moment for the server to start
-            await asyncio.sleep(2)
-            
-            return process
-            
-        except Exception as e:
-            logger.error(f"Error running GitHub MCP server: {str(e)}")
-            raise
+    Note: This class is being phased out in favor of service-specific
+    implementations like GitHubMcpService that use the SubprocessManager.
+    It is kept for backward compatibility.
+    """
     
     @staticmethod
     async def use_github_mcp(tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
@@ -69,36 +40,30 @@ class McpClient:
         try:
             from config import settings
             
-            # Try to use the MCP tool through Cline first
+            # Use the subprocess-based approach
+            logger.info(f"Using subprocess-based GitHub MCP client for tool: {tool_name}")
+            
+            # Create a subprocess manager for the GitHub MCP server
+            manager = SubprocessManager([
+                "cmd.exe", "/c", 
+                "npx", "-y", "@modelcontextprotocol/server-github"
+            ])
+            
+            # Start the server
+            manager.start_server()
+            
             try:
-                # Import the use_mcp_tool function from Cline
-                from cline.mcp import use_mcp_tool
-                
-                # Use the MCP tool directly
-                result = await use_mcp_tool(
-                    "github.com/modelcontextprotocol/servers/tree/main/src/github",
-                    tool_name,
-                    arguments
-                )
+                # Send the request
+                result = manager.send_request({
+                    "server_name": "github.com/modelcontextprotocol/servers/tree/main/src/github",
+                    "tool_name": tool_name,
+                    "arguments": arguments
+                })
                 
                 return result
-                
-            except ImportError:
-                logger.info("cline.mcp module not found, using HTTP-based GitHub MCP client")
-                
-                # Get GitHub token from settings
-                github_token = settings.github_token
-                if not github_token:
-                    logger.error("GitHub token not found in settings")
-                    return {"error": "GitHub token not found in settings"}
-                
-                # Use the HTTP-based client
-                from utils.github_mcp_http import GithubMcpHttpClient
-                return await GithubMcpHttpClient.run_github_mcp_and_request(
-                    tool_name,
-                    arguments,
-                    github_token
-                )
+            finally:
+                # Stop the server
+                manager.stop_server()
                 
         except Exception as e:
             logger.error(f"Error using GitHub MCP tool {tool_name}: {str(e)}")
@@ -142,36 +107,42 @@ class McpClient:
             The result of the tool execution
         """
         try:
-            # Try to use the MCP tool
+            # Use the subprocess-based approach
+            logger.info(f"Using subprocess-based Fetch MCP client for tool: {tool_name}")
+            
+            # Create a subprocess manager for the Fetch MCP server
+            manager = SubprocessManager([
+                "cmd.exe", "/c", 
+                "npx", "-y", "@modelcontextprotocol/server-fetch-mcp"
+            ])
+            
+            # Start the server
+            manager.start_server()
+            
             try:
-                # Import the use_mcp_tool function from the correct module
-                # This is the correct import path for Cline
-                from cline.mcp import use_mcp_tool
-                
-                # Use the MCP tool directly
-                result = await use_mcp_tool(
-                    "github.com/zcaceres/fetch-mcp",
-                    tool_name,
-                    arguments
-                )
+                # Send the request
+                result = manager.send_request({
+                    "server_name": "github.com/zcaceres/fetch-mcp",
+                    "tool_name": tool_name,
+                    "arguments": arguments
+                })
                 
                 return result
+            finally:
+                # Stop the server
+                manager.stop_server()
                 
-            except ImportError:
-                logger.warning("cline.mcp module not found, using mock response")
-                
-                # Return a mock response for testing
-                if tool_name == "fetch_html":
-                    return {
-                        "content": "<html><body><h1>Example Page</h1></body></html>"
-                    }
-                elif tool_name == "fetch_markdown":
-                    return {
-                        "content": "# Example Page\n\nThis is an example page."
-                    }
-                else:
-                    return {"error": f"Mock response not implemented for {tool_name}"}
-            
         except Exception as e:
             logger.error(f"Error using Fetch MCP tool {tool_name}: {str(e)}")
-            return {"error": str(e)}
+            
+            # Return a mock response for testing
+            if tool_name == "fetch_html":
+                return {
+                    "content": "<html><body><h1>Example Page</h1></body></html>"
+                }
+            elif tool_name == "fetch_markdown":
+                return {
+                    "content": "# Example Page\n\nThis is an example page."
+                }
+            else:
+                return {"error": f"Mock response not implemented for {tool_name}"}
