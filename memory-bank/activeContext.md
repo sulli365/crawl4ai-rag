@@ -1,7 +1,7 @@
 # Active Context: crawl4ai-rag
 
 ## Current Focus
-The project has been restructured from an MCP server to an agentic RAG application focused on website analysis, code generation, and markdown export. The initial implementation of the core architecture and components has been completed. Currently, we are focusing on enhancing the website analyzer with documentation-specific metrics and validation, improving error handling with custom exceptions, and preparing for code generation template enhancements. We have also implemented a GitHub-specific documentation scraper to better handle GitHub repositories. We've resolved import issues by restructuring the local supabase module to db_client to avoid conflicts with the external Supabase package, and installed Playwright for web crawling capabilities. We have now successfully implemented the GitHub MCP integration for retrieving repository content and storing it in Supabase.
+The project has been restructured from an MCP server to an agentic RAG application focused on website analysis, code generation, and markdown export. The initial implementation of the core architecture and components has been completed. Currently, we are focusing on enhancing the website analyzer with documentation-specific metrics and validation, improving error handling with custom exceptions, and preparing for code generation template enhancements. We have also implemented a GitHub-specific documentation scraper to better handle GitHub repositories. We've resolved import issues by restructuring the local supabase module to db_client to avoid conflicts with the external Supabase package, and installed Playwright for web crawling capabilities. We have now successfully implemented the GitHub MCP integration for retrieving repository content and storing it in Supabase, with enhanced configuration options and CLI improvements.
 
 ## Recent Changes
 - Enhanced the website analyzer with documentation-specific metrics:
@@ -23,6 +23,12 @@ The project has been restructured from an MCP server to an agentic RAG applicati
   - Modified GitHub documentation scraper template to support MCP
   - Added CLI command for syncing GitHub repositories to Supabase
   - Implemented fallback mechanisms for when MCP is unavailable
+- Enhanced GitHub MCP integration:
+  - Added GitHubConfig class with configurable options
+  - Implemented file filtering based on extensions and patterns
+  - Updated CLI to support multiple repositories
+  - Added direct communication with GitHub MCP server
+  - Improved error handling for MCP server interactions
 - Updated dependencies:
   - Added pydantic-settings to support newer Pydantic versions
   - Fixed import issues in utils/logging.py

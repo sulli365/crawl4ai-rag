@@ -107,3 +107,70 @@ SyntaxError: invalid syntax
 2025-03-23 18:49:50 | WARNING  | utils.mcp_client:use_github_mcp:49 - claude_dev.mcp module not found, using mock response
 2025-03-23 18:49:50 | INFO     | analyzer.github_mcp:sync_repository:83 - Repository sync completed. Processed 1 items.
 2025-03-23 18:49:50 | INFO     | __main__:sync_github:112 - Synced 1 items from GitHub repository unclecode/crawl4ai to Supabase
+2025-03-23 19:33:39 | INFO     | utils.logging:setup_logging:83 - Logging configured successfully
+2025-03-23 19:33:39 | INFO     | __main__:sync_github:135 - Syncing repository: modelcontextprotocol/crawl4ai
+2025-03-23 19:33:39 | INFO     | analyzer.github_mcp:sync_repository:60 - Syncing repository modelcontextprotocol/crawl4ai (branch: main)
+2025-03-23 19:33:39 | WARNING  | utils.mcp_client:use_github_mcp:49 - claude_dev.mcp module not found, using mock response
+2025-03-23 19:33:39 | WARNING  | utils.mcp_client:use_github_mcp:49 - claude_dev.mcp module not found, using mock response
+2025-03-23 19:33:40 | INFO     | db_client.repository:save_page:110 - Saved page: https://github.com/modelcontextprotocol/crawl4ai/blob/main/README.md (chunk 0)
+2025-03-23 19:33:40 | INFO     | analyzer.github_mcp:_process_readme:176 - Processed README for modelcontextprotocol/crawl4ai
+2025-03-23 19:33:40 | WARNING  | utils.mcp_client:use_github_mcp:49 - claude_dev.mcp module not found, using mock response
+2025-03-23 19:33:40 | INFO     | analyzer.github_mcp:sync_repository:85 - Repository sync completed. Processed 1 items.
+2025-03-23 19:33:40 | INFO     | __main__:sync_github:144 - Synced 1 items from GitHub repository modelcontextprotocol/crawl4ai to Supabase
+2025-03-23 19:33:40 | INFO     | __main__:sync_github:150 - Total items synced: 1
+2025-03-23 20:10:47 | INFO     | utils.logging:setup_logging:83 - Logging configured successfully
+2025-03-23 20:10:47 | INFO     | __main__:sync_github:135 - Syncing repository: modelcontextprotocol/crawl4ai
+2025-03-23 20:10:47 | INFO     | analyzer.github_mcp:sync_repository:60 - Syncing repository modelcontextprotocol/crawl4ai (branch: main)
+2025-03-23 20:10:47 | WARNING  | utils.mcp_client:use_github_mcp:51 - cline.mcp module not found, using mock response
+2025-03-23 20:10:47 | WARNING  | utils.mcp_client:use_github_mcp:51 - cline.mcp module not found, using mock response
+2025-03-23 20:10:49 | ERROR    | db_client.repository:save_page:114 - Error saving page https://github.com/modelcontextprotocol/crawl4ai/blob/main/README.md: {'code': '23505', 'details': 'Key (url, chunk_number)=(https://github.com/modelcontextprotocol/crawl4ai/blob/main/README.md, 0) already exists.', 'hint': None, 'message': 'duplicate key value violates unique constraint "crawl4ai_site_pages_url_chunk_number_key"'}
+2025-03-23 20:10:49 | ERROR    | analyzer.github_mcp:_process_readme:179 - Error processing README: {'code': '23505', 'details': 'Key (url, chunk_number)=(https://github.com/modelcontextprotocol/crawl4ai/blob/main/README.md, 0) already exists.', 'hint': None, 'message': 'duplicate key value violates unique constraint "crawl4ai_site_pages_url_chunk_number_key"'}
+2025-03-23 20:10:49 | WARNING  | utils.mcp_client:use_github_mcp:51 - cline.mcp module not found, using mock response
+2025-03-23 20:10:49 | INFO     | analyzer.github_mcp:sync_repository:85 - Repository sync completed. Processed 0 items.
+2025-03-23 20:10:49 | INFO     | __main__:sync_github:144 - Synced 0 items from GitHub repository modelcontextprotocol/crawl4ai to Supabase
+2025-03-23 20:10:49 | INFO     | __main__:sync_github:150 - Total items synced: 0
+2025-03-23 20:11:25 | INFO     | utils.logging:setup_logging:83 - Logging configured successfully
+2025-03-23 20:11:25 | INFO     | __main__:sync_github:135 - Syncing repository: modelcontextprotocol/servers
+2025-03-23 20:11:25 | INFO     | analyzer.github_mcp:sync_repository:60 - Syncing repository modelcontextprotocol/servers (branch: main)
+2025-03-23 20:11:25 | WARNING  | utils.mcp_client:use_github_mcp:51 - cline.mcp module not found, using mock response
+2025-03-23 20:11:25 | WARNING  | utils.mcp_client:use_github_mcp:51 - cline.mcp module not found, using mock response
+2025-03-23 20:11:27 | INFO     | db_client.repository:save_page:110 - Saved page: https://github.com/modelcontextprotocol/servers/blob/main/README.md (chunk 0)
+2025-03-23 20:11:27 | INFO     | analyzer.github_mcp:_process_readme:176 - Processed README for modelcontextprotocol/servers
+2025-03-23 20:11:27 | WARNING  | utils.mcp_client:use_github_mcp:51 - cline.mcp module not found, using mock response
+2025-03-23 20:11:27 | INFO     | analyzer.github_mcp:sync_repository:85 - Repository sync completed. Processed 1 items.
+2025-03-23 20:11:27 | INFO     | __main__:sync_github:144 - Synced 1 items from GitHub repository modelcontextprotocol/servers to Supabase
+2025-03-23 20:11:27 | INFO     | __main__:sync_github:150 - Total items synced: 1
+2025-03-23 20:32:00 | INFO     | utils.logging:setup_logging:83 - Logging configured successfully
+2025-03-23 20:32:00 | INFO     | __main__:sync_github:135 - Syncing repository: modelcontextprotocol/crawl4ai
+2025-03-23 20:32:00 | INFO     | analyzer.github_mcp:sync_repository:60 - Syncing repository modelcontextprotocol/crawl4ai (branch: main)
+2025-03-23 20:32:00 | INFO     | utils.mcp_client:use_github_mcp:87 - cline.mcp module not found, trying to run GitHub MCP server directly
+2025-03-23 20:32:03 | ERROR    | utils.mcp_client:use_github_mcp:144 - Error using GitHub MCP server: Command 'type C:\Users\sfsul\AppData\Local\Temp\tmphetjmwn3.json | npx -y @modelcontextprotocol/cli request > C:\Users\sfsul\AppData\Local\Temp\tmpl5ddov1k.json' returned non-zero exit status 1.
+2025-03-23 20:32:03 | WARNING  | utils.mcp_client:use_github_mcp:159 - Falling back to mock responses
+2025-03-23 20:32:03 | INFO     | utils.mcp_client:use_github_mcp:87 - cline.mcp module not found, trying to run GitHub MCP server directly
+2025-03-23 20:32:06 | ERROR    | utils.mcp_client:use_github_mcp:144 - Error using GitHub MCP server: Command 'type C:\Users\sfsul\AppData\Local\Temp\tmpdoi0qdqu.json | npx -y @modelcontextprotocol/cli request > C:\Users\sfsul\AppData\Local\Temp\tmp8bz5k_r5.json' returned non-zero exit status 1.
+2025-03-23 20:32:06 | WARNING  | utils.mcp_client:use_github_mcp:159 - Falling back to mock responses
+2025-03-23 20:32:08 | ERROR    | db_client.repository:save_page:114 - Error saving page https://github.com/modelcontextprotocol/crawl4ai/blob/main/README.md: {'code': '23505', 'details': 'Key (url, chunk_number)=(https://github.com/modelcontextprotocol/crawl4ai/blob/main/README.md, 0) already exists.', 'hint': None, 'message': 'duplicate key value violates unique constraint "crawl4ai_site_pages_url_chunk_number_key"'}
+2025-03-23 20:32:08 | ERROR    | analyzer.github_mcp:_process_readme:179 - Error processing README: {'code': '23505', 'details': 'Key (url, chunk_number)=(https://github.com/modelcontextprotocol/crawl4ai/blob/main/README.md, 0) already exists.', 'hint': None, 'message': 'duplicate key value violates unique constraint "crawl4ai_site_pages_url_chunk_number_key"'}
+2025-03-23 20:32:08 | INFO     | utils.mcp_client:use_github_mcp:87 - cline.mcp module not found, trying to run GitHub MCP server directly
+2025-03-23 20:32:11 | ERROR    | utils.mcp_client:use_github_mcp:144 - Error using GitHub MCP server: Command 'type C:\Users\sfsul\AppData\Local\Temp\tmp70jax8nj.json | npx -y @modelcontextprotocol/cli request > C:\Users\sfsul\AppData\Local\Temp\tmpxfi7kgif.json' returned non-zero exit status 1.
+2025-03-23 20:32:11 | WARNING  | utils.mcp_client:use_github_mcp:159 - Falling back to mock responses
+2025-03-23 20:32:11 | INFO     | analyzer.github_mcp:sync_repository:85 - Repository sync completed. Processed 0 items.
+2025-03-23 20:32:11 | INFO     | __main__:sync_github:144 - Synced 0 items from GitHub repository modelcontextprotocol/crawl4ai to Supabase
+2025-03-23 20:32:11 | INFO     | __main__:sync_github:150 - Total items synced: 0
+2025-03-23 20:35:26 | INFO     | utils.logging:setup_logging:83 - Logging configured successfully
+2025-03-23 20:35:26 | INFO     | __main__:sync_github:135 - Syncing repository: modelcontextprotocol/crawl4ai
+2025-03-23 20:35:26 | INFO     | analyzer.github_mcp:sync_repository:60 - Syncing repository modelcontextprotocol/crawl4ai (branch: main)
+2025-03-23 20:35:26 | INFO     | utils.mcp_client:use_github_mcp:87 - cline.mcp module not found, trying to run GitHub MCP server directly
+2025-03-23 20:35:30 | ERROR    | utils.mcp_client:use_github_mcp:165 - Error using GitHub MCP server: [Errno 22] Invalid argument
+2025-03-23 20:35:30 | WARNING  | utils.mcp_client:use_github_mcp:175 - Falling back to mock responses
+2025-03-23 20:35:30 | INFO     | utils.mcp_client:use_github_mcp:87 - cline.mcp module not found, trying to run GitHub MCP server directly
+2025-03-23 20:35:34 | ERROR    | utils.mcp_client:use_github_mcp:165 - Error using GitHub MCP server: [Errno 22] Invalid argument
+2025-03-23 20:35:34 | WARNING  | utils.mcp_client:use_github_mcp:175 - Falling back to mock responses
+2025-03-23 20:35:35 | ERROR    | db_client.repository:save_page:114 - Error saving page https://github.com/modelcontextprotocol/crawl4ai/blob/main/README.md: {'code': '23505', 'details': 'Key (url, chunk_number)=(https://github.com/modelcontextprotocol/crawl4ai/blob/main/README.md, 0) already exists.', 'hint': None, 'message': 'duplicate key value violates unique constraint "crawl4ai_site_pages_url_chunk_number_key"'}
+2025-03-23 20:35:35 | ERROR    | analyzer.github_mcp:_process_readme:179 - Error processing README: {'code': '23505', 'details': 'Key (url, chunk_number)=(https://github.com/modelcontextprotocol/crawl4ai/blob/main/README.md, 0) already exists.', 'hint': None, 'message': 'duplicate key value violates unique constraint "crawl4ai_site_pages_url_chunk_number_key"'}
+2025-03-23 20:35:35 | INFO     | utils.mcp_client:use_github_mcp:87 - cline.mcp module not found, trying to run GitHub MCP server directly
+2025-03-23 20:35:39 | ERROR    | utils.mcp_client:use_github_mcp:165 - Error using GitHub MCP server: [Errno 22] Invalid argument
+2025-03-23 20:35:39 | WARNING  | utils.mcp_client:use_github_mcp:175 - Falling back to mock responses
+2025-03-23 20:35:39 | INFO     | analyzer.github_mcp:sync_repository:85 - Repository sync completed. Processed 0 items.
+2025-03-23 20:35:39 | INFO     | __main__:sync_github:144 - Synced 0 items from GitHub repository modelcontextprotocol/crawl4ai to Supabase
+2025-03-23 20:35:39 | INFO     | __main__:sync_github:150 - Total items synced: 0

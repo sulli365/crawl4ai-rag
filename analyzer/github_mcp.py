@@ -2,6 +2,7 @@
 GitHub MCP integration for crawl4ai-rag.
 """
 
+import re
 from typing import Dict, List, Any, Optional, Tuple
 import os
 import json
@@ -12,6 +13,7 @@ from utils.logging import get_logger
 from utils.mcp_client import McpClient
 from db_client.repository import PageRepository
 from app.embeddings import generate_embedding
+from config import github_config
 
 logger = get_logger(__name__)
 
@@ -221,6 +223,11 @@ class GitHubMcpScraper:
                     if item_path.startswith(".git/") or self._is_binary_file(item_path):
                         continue
                     
+                    # Check exclude paths
+                    if any(excl in item_path for excl in github_config.exclude_paths):
+                        logger.debug(f"Skipping excluded path: {item_path}")
+                        continue
+                    
                     # Process subdirectories recursively
                     if item_type == "dir":
                         await self._process_directory(item_path)
@@ -245,9 +252,20 @@ class GitHubMcpScraper:
             path: File path within the repository
         """
         try:
-            # Skip binary files and non-documentation files
-            if self._is_binary_file(path) or not self._is_documentation_file(path):
+            # Skip binary files
+            if self._is_binary_file(path):
                 return
+                
+            # Check include patterns first (these take precedence)
+            include_file = any(re.search(pattern, path) for pattern in github_config.include_patterns)
+            
+            # If not explicitly included, check file extensions
+            if not include_file:
+                # Check if file extension is in the allowed list
+                ext = os.path.splitext(path)[1].lower()
+                if ext not in github_config.file_extensions:
+                    logger.debug(f"Skipping file with non-matching extension: {path}")
+                    return
             
             # Use the GitHub MCP to get file contents
             result = await McpClient.use_github_mcp(

@@ -8,6 +8,28 @@ from pydantic import Field
 from pydantic_settings import BaseSettings
 
 
+class GitHubConfig(BaseSettings):
+    """
+    GitHub-specific configuration settings.
+    """
+    mcp_server: str = Field(
+        default="github.com/modelcontextprotocol/servers/tree/main/src/github",
+        description="MCP server endpoint for GitHub operations"
+    )
+    target_repos: list = Field(
+        default=["modelcontextprotocol/crawl4ai"],
+        description="List of repos in 'owner/repo' format. Empty list enables custom input"
+    )
+    file_extensions: list = [".py", ".md", ".ipynb", ".rst"]
+    exclude_paths: list = Field(
+        default=["tests/"],
+        description="Paths to exclude from crawling"
+    )
+    include_patterns: list = Field(
+        default=["README.*", "examples/", "docs/"],
+        description="Patterns that trigger inclusion regardless of extension"
+    )
+
 class Settings(BaseSettings):
     """
     Application settings loaded from environment variables.
@@ -44,5 +66,6 @@ class Settings(BaseSettings):
         case_sensitive = False
 
 
-# Create a global settings instance
+# Create global settings instances
 settings = Settings()
+github_config = GitHubConfig()

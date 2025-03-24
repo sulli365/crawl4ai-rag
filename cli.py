@@ -91,8 +91,9 @@ def sync(
 
 @app.command()
 def sync_github(
-    owner: str = typer.Option(..., "--owner", "-o", help="Repository owner (username or organization)"),
-    repo: str = typer.Option(..., "--repo", "-r", help="Repository name"),
+    owner: str = typer.Option(None, "--owner", "-o", help="Repository owner (username or organization)"),
+    repo: str = typer.Option(None, "--repo", "-r", help="Repository name"),
+    repos: List[str] = typer.Option(None, "--repos", help="GitHub repos in owner/repo format. Overrides config defaults"),
     branch: str = typer.Option("main", "--branch", "-b", help="Branch to sync"),
     include_issues: bool = typer.Option(False, "--include-issues", "-i", help="Include issues"),
     include_pull_requests: bool = typer.Option(False, "--include-prs", "-p", help="Include pull requests")
@@ -100,16 +101,53 @@ def sync_github(
     """
     Sync GitHub repository content to Supabase using MCP.
     """
+    from config import github_config
+    
     try:
-        count = asyncio.run(sync_github_repository(
-            owner=owner,
-            repo=repo,
-            branch=branch,
-            include_issues=include_issues,
-            include_pull_requests=include_pull_requests
-        ))
+        # Determine which repositories to sync
+        repositories_to_sync = []
         
-        logger.info(f"Synced {count} items from GitHub repository {owner}/{repo} to Supabase")
+        # If repos option is provided, use those
+        if repos:
+            repositories_to_sync = repos
+        # If owner and repo are provided, use those
+        elif owner and repo:
+            repositories_to_sync = [f"{owner}/{repo}"]
+        # Otherwise, use the configured target_repos
+        else:
+            repositories_to_sync = github_config.target_repos
+            
+        if not repositories_to_sync:
+            logger.error("No repositories specified. Use --repos, --owner/--repo, or configure target_repos in settings.")
+            sys.exit(1)
+            
+        total_count = 0
+        for repo_string in repositories_to_sync:
+            try:
+                # Parse owner/repo format
+                parts = repo_string.split('/')
+                if len(parts) != 2:
+                    logger.error(f"Invalid repository format: {repo_string}. Expected format: owner/repo")
+                    continue
+                    
+                owner, repo = parts
+                
+                logger.info(f"Syncing repository: {owner}/{repo}")
+                count = asyncio.run(sync_github_repository(
+                    owner=owner,
+                    repo=repo,
+                    branch=branch,
+                    include_issues=include_issues,
+                    include_pull_requests=include_pull_requests
+                ))
+                
+                logger.info(f"Synced {count} items from GitHub repository {owner}/{repo} to Supabase")
+                total_count += count
+                
+            except Exception as e:
+                logger.error(f"Error syncing repository {repo_string}: {str(e)}")
+                
+        logger.info(f"Total items synced: {total_count}")
         
     except Exception as e:
         logger.error(f"Error: {str(e)}")
