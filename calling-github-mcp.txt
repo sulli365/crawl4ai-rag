@@ -1,97 +1,44 @@
-"""
-here's a Python helper script that:
-
-    Uses subprocess to call npx -y @modelcontextprotocol/server-github
-
-    Sends a request to the server (assuming it starts quickly and responds over HTTP)
-
-    Cleans up after the request is complete
-	
-Assumptions:
-
-    The @modelcontextprotocol/server-github server runs a temporary local server (e.g., on localhost:3000 or similar)
-
-    It responds to a single HTTP request before exiting — or exits after the first use
-
-    You want to call it from within a Python app or workflow (e.g., your coding assistant)
-
-If the actual server behavior differs, we can tweak the logic.
-
-"""
-
+# stdio implementation of call to Github MCP
 
 import subprocess
-import requests
-import time
+import json
 
-def wait_for_server_ready(url, timeout=10, interval=0.5):
+def call_github_mcp_via_stdio(request_json: dict) -> dict:
     """
-    Polls the given URL until the server responds or timeout is reached.
-
-    Returns True if server becomes ready, False otherwise.
-    """
-    print(f"⏳ Waiting for server to respond at {url}...")
-    start_time = time.time()
-    while time.time() - start_time < timeout:
-        try:
-            r = requests.get(url)
-            if r.status_code < 500:
-                print("✅ Server is ready.")
-                return True
-        except requests.exceptions.ConnectionError:
-            pass
-        time.sleep(interval)
-    print("❌ Server did not become ready in time.")
-    return False
-
-def run_github_mcp_and_request(
-    request_url: str = "http://localhost:3000",
-    request_timeout: int = 10
-):
-    """
-    Starts the GitHub MCP server using `npx`, sends a request once the server is ready, then exits.
-
-    Parameters:
-        request_url (str): The URL to send a request to once the server is up.
-        request_timeout (int): Timeout for the request itself.
-
-    Returns:
-        dict: Response data or error message.
+    Launches the GitHub MCP server via npx and communicates over stdio.
     """
     try:
-        print("🔁 Starting GitHub MCP server...")
+        # Start the MCP server subprocess
         proc = subprocess.Popen(
             ["npx", "-y", "@modelcontextprotocol/server-github"],
+            stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
+            stderr=subprocess.PIPE,
+            text=True
         )
 
-        if not wait_for_server_ready(request_url, timeout=15):
-            proc.kill()
-            return {"status": "error", "message": "MCP server did not become ready."}
+        # Send request as JSON string
+        input_str = json.dumps(request_json) + "\n"
+        stdout_data, stderr_data = proc.communicate(input=input_str, timeout=10)
 
-        print("📡 Sending request to MCP server...")
-        response = requests.get(request_url, timeout=request_timeout)
+        if stderr_data:
+            print("⚠️ MCP stderr:", stderr_data)
 
-        # Wait for the server to shut down on its own (if it does)
-        try:
-            proc.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            proc.kill()
+        return json.loads(stdout_data.strip())
 
-        return {
-            "status": "success",
-            "status_code": response.status_code,
-            "data": response.text
-        }
-
-    except requests.exceptions.RequestException as e:
-        return {"status": "error", "message": f"HTTP request failed: {e}"}
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        return {"status": "error", "message": "MCP server timed out."}
     except Exception as e:
-        return {"status": "error", "message": f"Unexpected error: {e}"}
+        return {"status": "error", "message": str(e)}
 
 # Example usage
 if __name__ == "__main__":
-    result = run_github_mcp_and_request()
-    print("✅ Done:", result)
-
+    request = {
+        "tool": "search_repositories",
+        "args": {
+            "query": "unclecode/crawl4ai"
+        }
+    }
+    response = call_github_mcp_via_stdio(request)
+    print("✅ MCP Response:", response)

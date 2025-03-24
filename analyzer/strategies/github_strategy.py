@@ -8,7 +8,7 @@ import re
 from urllib.parse import urlparse
 
 from utils.logging import get_logger
-from utils.mcp_client import McpClient
+from analyzer.github_mcp_service import GitHubMcpService
 from . import DocumentationStrategy
 
 logger = get_logger(__name__)
@@ -18,6 +18,13 @@ class GitHubDocumentationStrategy(DocumentationStrategy):
     """
     Scraping strategy for GitHub documentation websites.
     """
+    
+    def __init__(self):
+        """
+        Initialize the GitHub documentation strategy.
+        """
+        super().__init__()
+        self.github_service = GitHubMcpService()
     
     async def generate_code(self, analysis: Dict[str, Any]) -> str:
         """
@@ -50,11 +57,8 @@ class GitHubDocumentationStrategy(DocumentationStrategy):
         # Enhance repo_info with additional data from GitHub MCP if possible
         try:
             # Get repository information using GitHub MCP
-            mcp_result = await McpClient.use_github_mcp(
-                "search_repositories",
-                {
-                    "query": f"repo:{repo_info['owner']}/{repo_info['repo']}"
-                }
+            mcp_result = await self.github_service.search_repositories(
+                query=f"repo:{repo_info['owner']}/{repo_info['repo']}"
             )
             
             if not "error" in mcp_result and mcp_result.get("items"):
@@ -101,11 +105,8 @@ class GitHubDocumentationStrategy(DocumentationStrategy):
             repo_info = self._parse_github_url(url)
             
             # Get repository information
-            repo_result = await McpClient.use_github_mcp(
-                "search_repositories",
-                {
-                    "query": f"repo:{repo_info['owner']}/{repo_info['repo']}"
-                }
+            repo_result = await self.github_service.search_repositories(
+                query=f"repo:{repo_info['owner']}/{repo_info['repo']}"
             )
             
             if "error" in repo_result:
@@ -119,14 +120,11 @@ class GitHubDocumentationStrategy(DocumentationStrategy):
             repo_data = repo_result["items"][0]
             
             # Get README content
-            readme_result = await McpClient.use_github_mcp(
-                "get_file_contents",
-                {
-                    "owner": repo_info["owner"],
-                    "repo": repo_info["repo"],
-                    "path": "README.md",
-                    "branch": repo_info["branch"]
-                }
+            readme_result = await self.github_service.get_file_contents(
+                owner=repo_info["owner"],
+                repo=repo_info["repo"],
+                path="README.md",
+                branch=repo_info["branch"]
             )
             
             readme_content = ""
@@ -144,14 +142,11 @@ class GitHubDocumentationStrategy(DocumentationStrategy):
             try:
                 # This is a simplified approach - in a real implementation,
                 # you would recursively get all files
-                root_contents = await McpClient.use_github_mcp(
-                    "get_file_contents",
-                    {
-                        "owner": repo_info["owner"],
-                        "repo": repo_info["repo"],
-                        "path": "",
-                        "branch": repo_info["branch"]
-                    }
+                root_contents = await self.github_service.get_file_contents(
+                    owner=repo_info["owner"],
+                    repo=repo_info["repo"],
+                    path="",
+                    branch=repo_info["branch"]
                 )
                 
                 if not "error" in root_contents and isinstance(root_contents, list):

@@ -10,7 +10,7 @@ import asyncio
 from datetime import datetime, timezone
 
 from utils.logging import get_logger
-from utils.mcp_client import McpClient
+from analyzer.github_mcp_service import GitHubMcpService
 from db_client.repository import PageRepository
 from app.embeddings import generate_embedding
 from config import github_config
@@ -38,6 +38,7 @@ class GitHubMcpScraper:
         self.page_repository = PageRepository()
         self.base_url = f"https://github.com/{owner}/{repo}"
         self.processed_count = 0
+        self.github_service = GitHubMcpService()
     
     async def sync_repository(
         self,
@@ -104,11 +105,8 @@ class GitHubMcpScraper:
             for attempt in range(max_retries):
                 try:
                     # Use the GitHub MCP to get repository information
-                    result = await McpClient.use_github_mcp(
-                        "search_repositories",
-                        {
-                            "query": f"repo:{self.owner}/{self.repo}"
-                        }
+                    result = await self.github_service.search_repositories(
+                        query=f"repo:{self.owner}/{self.repo}"
                     )
                     
                     if "error" in result:
@@ -150,14 +148,11 @@ class GitHubMcpScraper:
             for attempt in range(max_retries):
                 try:
                     # Use the GitHub MCP to get the README file
-                    result = await McpClient.use_github_mcp(
-                        "get_file_contents",
-                        {
-                            "owner": self.owner,
-                            "repo": self.repo,
-                            "path": "README.md",
-                            "branch": self.branch
-                        }
+                    result = await self.github_service.get_file_contents(
+                        owner=self.owner,
+                        repo=self.repo,
+                        path="README.md",
+                        branch=self.branch
                     )
                     
                     if "error" in result:
@@ -246,14 +241,11 @@ class GitHubMcpScraper:
             for attempt in range(max_retries):
                 try:
                     # Use the GitHub MCP to get directory contents
-                    result = await McpClient.use_github_mcp(
-                        "get_file_contents",
-                        {
-                            "owner": self.owner,
-                            "repo": self.repo,
-                            "path": path,
-                            "branch": self.branch
-                        }
+                    result = await self.github_service.get_file_contents(
+                        owner=self.owner,
+                        repo=self.repo,
+                        path=path,
+                        branch=self.branch
                     )
                     
                     if "error" in result:
@@ -337,14 +329,11 @@ class GitHubMcpScraper:
             for attempt in range(max_retries):
                 try:
                     # Use the GitHub MCP to get file contents
-                    result = await McpClient.use_github_mcp(
-                        "get_file_contents",
-                        {
-                            "owner": self.owner,
-                            "repo": self.repo,
-                            "path": path,
-                            "branch": self.branch
-                        }
+                    result = await self.github_service.get_file_contents(
+                        owner=self.owner,
+                        repo=self.repo,
+                        path=path,
+                        branch=self.branch
                     )
                     
                     if "error" in result:
@@ -420,13 +409,10 @@ class GitHubMcpScraper:
             for attempt in range(max_retries):
                 try:
                     # Use the GitHub MCP to get issues
-                    result = await McpClient.use_github_mcp(
-                        "list_issues",
-                        {
-                            "owner": self.owner,
-                            "repo": self.repo,
-                            "state": "all"
-                        }
+                    result = await self.github_service.list_issues(
+                        owner=self.owner,
+                        repo=self.repo,
+                        state="all"
                     )
                     
                     if "error" in result:
@@ -451,13 +437,10 @@ class GitHubMcpScraper:
                         for issue_attempt in range(max_retries):
                             try:
                                 # Get full issue details
-                                issue_result = await McpClient.use_github_mcp(
-                                    "get_issue",
-                                    {
-                                        "owner": self.owner,
-                                        "repo": self.repo,
-                                        "issue_number": issue_number
-                                    }
+                                issue_result = await self.github_service.get_issue(
+                                    owner=self.owner,
+                                    repo=self.repo,
+                                    issue_number=issue_number
                                 )
                                 
                                 if "error" in issue_result:
@@ -540,13 +523,10 @@ class GitHubMcpScraper:
             for attempt in range(max_retries):
                 try:
                     # Use the GitHub MCP to get pull requests
-                    result = await McpClient.use_github_mcp(
-                        "list_pull_requests",
-                        {
-                            "owner": self.owner,
-                            "repo": self.repo,
-                            "state": "all"
-                        }
+                    result = await self.github_service.list_pull_requests(
+                        owner=self.owner,
+                        repo=self.repo,
+                        state="all"
                     )
                     
                     if "error" in result:
@@ -571,13 +551,10 @@ class GitHubMcpScraper:
                         for pr_attempt in range(max_retries):
                             try:
                                 # Get full pull request details
-                                pr_result = await McpClient.use_github_mcp(
-                                    "get_pull_request",
-                                    {
-                                        "owner": self.owner,
-                                        "repo": self.repo,
-                                        "pull_number": pr_number
-                                    }
+                                pr_result = await self.github_service.get_pull_request(
+                                    owner=self.owner,
+                                    repo=self.repo,
+                                    pull_number=pr_number
                                 )
                                 
                                 if "error" in pr_result:

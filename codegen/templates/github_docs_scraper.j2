@@ -20,7 +20,7 @@ from supabase import create_client, Client
 
 # Import MCP client utilities if available
 try:
-    from utils.mcp_client import McpClient
+    from analyzer.github_mcp_service import GitHubMcpService
     HAS_MCP = True
 except ImportError:
     HAS_MCP = False
@@ -55,6 +55,11 @@ class GitHubDocumentationScraper:
         self.repo_info = self._parse_github_url(self.base_url)
         self.doc_metrics = {}
         self.use_mcp = use_mcp and HAS_MCP
+        
+        # Initialize GitHub MCP service if available
+        self.github_service = None
+        if self.use_mcp:
+            self.github_service = GitHubMcpService()
         
         # Set up GitHub token
         self.github_token = github_token or os.environ.get("GITHUB_TOKEN")
@@ -150,11 +155,8 @@ class GitHubDocumentationScraper:
         """
         try:
             # Get repository information
-            repo_result = await McpClient.use_github_mcp(
-                "search_repositories",
-                {
-                    "query": f"repo:{self.repo_info['owner']}/{self.repo_info['repo']}"
-                }
+            repo_result = await self.github_service.search_repositories(
+                query=f"repo:{self.repo_info['owner']}/{self.repo_info['repo']}"
             )
             
             if "error" in repo_result:
@@ -170,14 +172,11 @@ class GitHubDocumentationScraper:
             repo_data = repo_result["items"][0]
             
             # Get README content
-            readme_result = await McpClient.use_github_mcp(
-                "get_file_contents",
-                {
-                    "owner": self.repo_info["owner"],
-                    "repo": self.repo_info["repo"],
-                    "path": "README.md",
-                    "branch": self.repo_info["branch"]
-                }
+            readme_result = await self.github_service.get_file_contents(
+                owner=self.repo_info["owner"],
+                repo=self.repo_info["repo"],
+                path="README.md",
+                branch=self.repo_info["branch"]
             )
             
             readme_content = ""
@@ -200,14 +199,11 @@ class GitHubDocumentationScraper:
             try:
                 # This is a simplified approach - in a real implementation,
                 # you would recursively get all files
-                root_contents = await McpClient.use_github_mcp(
-                    "get_file_contents",
-                    {
-                        "owner": self.repo_info["owner"],
-                        "repo": self.repo_info["repo"],
-                        "path": "",
-                        "branch": self.repo_info["branch"]
-                    }
+                root_contents = await self.github_service.get_file_contents(
+                    owner=self.repo_info["owner"],
+                    repo=self.repo_info["repo"],
+                    path="",
+                    branch=self.repo_info["branch"]
                 )
                 
                 if not "error" in root_contents and isinstance(root_contents, list):
@@ -293,14 +289,11 @@ class GitHubDocumentationScraper:
             
             # Get file content
             try:
-                file_result = await McpClient.use_github_mcp(
-                    "get_file_contents",
-                    {
-                        "owner": self.repo_info["owner"],
-                        "repo": self.repo_info["repo"],
-                        "path": file_path,
-                        "branch": self.repo_info["branch"]
-                    }
+                file_result = await self.github_service.get_file_contents(
+                    owner=self.repo_info["owner"],
+                    repo=self.repo_info["repo"],
+                    path=file_path,
+                    branch=self.repo_info["branch"]
                 )
                 
                 if "error" in file_result:

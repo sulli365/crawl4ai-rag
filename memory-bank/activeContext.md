@@ -1,7 +1,7 @@
 # Active Context: crawl4ai-rag
 
 ## Current Focus
-The project has been restructured from an MCP server to an agentic RAG application focused on website analysis, code generation, and markdown export. The initial implementation of the core architecture and components has been completed. Currently, we are focusing on enhancing the website analyzer with documentation-specific metrics and validation, improving error handling with custom exceptions, and preparing for code generation template enhancements. We have also implemented a GitHub-specific documentation scraper to better handle GitHub repositories. We've resolved import issues by restructuring the local supabase module to db_client to avoid conflicts with the external Supabase package, and installed Playwright for web crawling capabilities. We have now successfully implemented the GitHub MCP integration for retrieving repository content and storing it in Supabase, with enhanced configuration options and CLI improvements.
+The project has been restructured from an MCP server to an agentic RAG application focused on website analysis, code generation, and markdown export. The initial implementation of the core architecture and components has been completed. Currently, we are focusing on enhancing the website analyzer with documentation-specific metrics and validation, improving error handling with custom exceptions, and preparing for code generation template enhancements. We have also implemented a GitHub-specific documentation scraper to better handle GitHub repositories. We've resolved import issues by restructuring the local supabase module to db_client to avoid conflicts with the external Supabase package, and installed Playwright for web crawling capabilities. We have now successfully implemented the GitHub MCP integration for retrieving repository content and storing it in Supabase, with enhanced configuration options and CLI improvements. We have updated the GitHub MCP integration to use a subprocess approach for more reliable communication with the GitHub MCP server.
 
 ## Recent Changes
 - Enhanced the website analyzer with documentation-specific metrics:
@@ -29,9 +29,11 @@ The project has been restructured from an MCP server to an agentic RAG applicati
   - Updated CLI to support multiple repositories
   - Added direct communication with GitHub MCP server
   - Improved error handling for MCP server interactions
-  - Implemented HTTP-based approach for more reliable communication
+  - Implemented subprocess-based approach for more reliable communication
   - Added retry logic for transient failures
   - Created test script for verification
+  - Implemented SubprocessManager for MCP server communication
+  - Updated GitHubMcpService to use subprocess approach
 - Updated dependencies:
   - Added pydantic-settings to support newer Pydantic versions
   - Fixed import issues in utils/logging.py
@@ -179,3 +181,6 @@ We've enhanced the error handling strategy with a more structured approach:
 - MCP integration provides a more robust and structured way to access GitHub repositories
 - Fallback mechanisms are essential for ensuring system reliability when external services are unavailable
 - Mock responses can be used for testing when MCP servers are not available
+- Subprocess-based communication with MCP servers is more reliable than HTTP-based approaches
+- Proper error handling and retry logic are essential for robust MCP server communication
+- Standardizing the MCP server communication approach across the codebase improves maintainability

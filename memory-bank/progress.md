@@ -60,9 +60,11 @@ The project has progressed from the initial implementation phase to the enhancem
   - Updated CLI to support multiple repositories via --repos option
   - Added direct communication with GitHub MCP server using npx
   - Improved error handling with fallback to mock responses
-  - Implemented HTTP-based approach for more reliable communication
+  - Implemented subprocess-based approach for more reliable communication
   - Added retry logic for transient failures in all MCP operations
   - Created test script for verification with the crawl4ai repository
+  - Implemented SubprocessManager for MCP server communication
+  - Updated GitHubMcpService to use subprocess approach
 
 ## What's Left to Build
 
@@ -197,6 +199,9 @@ The project has progressed from the initial implementation phase to the enhancem
 - Implemented file filtering based on extensions and patterns
 - Updated CLI to support multiple repositories
 - Added direct communication with GitHub MCP server
+- Implemented subprocess-based approach for MCP server communication
+- Created SubprocessManager for standardized MCP server interaction
+- Updated GitHubMcpService to use the subprocess approach
 
 ## Next Milestones
 - Create additional documentation-specific code generation templates

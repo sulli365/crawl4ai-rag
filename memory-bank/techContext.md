@@ -12,6 +12,7 @@
 - **MCP Servers**: For enhanced API access and content retrieval
   - **GitHub MCP Server**: For structured GitHub repository access
   - **Fetch MCP Server**: For web content retrieval and parsing
+  - **Subprocess Communication**: For reliable interaction with MCP servers via stdin/stdout
 
 ### Key Libraries
 - **requests/httpx**: For HTTP requests
@@ -23,6 +24,8 @@
 - **typer/click**: For CLI interface
 - **jinja2**: For code template generation
 - **modelcontextprotocol**: For MCP server integration
+- **subprocess**: For managing MCP server subprocesses
+- **json**: For serializing/deserializing MCP server requests and responses
 
 ## Development Environment
 
@@ -195,6 +198,8 @@ crawl4ai-rag sync-github --owner username --repo repository --branch main --incl
 - Memory usage can be high when processing large websites
 - MCP server requests have their own rate limits and quotas
 - GitHub API (via MCP) has rate limiting that needs to be respected
+- Subprocess-based MCP communication adds overhead for process creation and management
+- Long-running MCP server subprocesses need proper cleanup to avoid resource leaks
 
 ### Security Considerations
 - API keys need to be securely managed
@@ -203,6 +208,9 @@ crawl4ai-rag sync-github --owner username --repo repository --branch main --incl
 - User-provided URLs must be validated and sanitized
 - GitHub tokens require appropriate scopes for repository access
 - MCP server authentication must be properly configured
+- Subprocess commands must be validated to prevent command injection
+- MCP server subprocess input/output must be properly sanitized
+- Proper error handling for subprocess communication failures
 
 ### Scalability Considerations
 - Supabase table size limits

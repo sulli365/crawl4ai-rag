@@ -10,15 +10,17 @@ flowchart TD
     Input --> Analyzer[Website Analyzer]
     
     Analyzer --> MCP[MCP Integration]
-    MCP -->|GitHub API| GithubMCP[GitHub MCP Server]
-    MCP -->|Web Content| FetchMCP[Fetch MCP Server]
+    MCP --> SubprocessMgr[Subprocess Manager]
+    SubprocessMgr -->|stdin/stdout| GithubMCP[GitHub MCP Server]
+    SubprocessMgr -->|stdin/stdout| FetchMCP[Fetch MCP Server]
     
     Analyzer --> DB[(Supabase DB)]
     Analyzer --> CodeGen[Code Generator]
     Analyzer --> MarkdownGen[Markdown Generator]
     
-    GithubMCP --> Analyzer
-    FetchMCP --> Analyzer
+    GithubMCP --> SubprocessMgr
+    FetchMCP --> SubprocessMgr
+    SubprocessMgr --> MCP
     
     CodeGen --> Output[Output Handler]
     MarkdownGen --> Output
@@ -36,6 +38,7 @@ flowchart TD
     
     subgraph "MCP Services"
         MCP
+        SubprocessMgr
         GithubMCP
         FetchMCP
     end
@@ -61,6 +64,10 @@ flowchart TD
   - **Fetch MCP Server**: Handles web content retrieval with built-in parsing
 - Manages authentication and request handling for MCP services
 - Provides fallback mechanisms when MCP services are unavailable
+- Uses subprocess-based communication for reliable interaction with MCP servers:
+  - **Subprocess Manager**: Handles stdin/stdout communication with MCP servers
+  - **Service Layer**: Provides a consistent interface to MCP server capabilities
+  - **Error Handling**: Implements retry logic and graceful degradation
 
 ### 3. Code Generator
 - Transforms website analysis into Python code
@@ -176,6 +183,67 @@ class GithubMcpAdapter(McpAdapter):
     async def fetch_file_contents(self, owner, repo, path, branch="main"):
         # Use github MCP server to fetch file contents
         pass
+```
+
+### Subprocess Communication Pattern
+Used for reliable communication with MCP servers via stdin/stdout.
+
+```python
+class SubprocessManager:
+    def __init__(self, server_cmd):
+        self.server_cmd = server_cmd
+        self.process = None
+        
+    def start_server(self):
+        # Start the MCP server subprocess
+        self.process = subprocess.Popen(
+            self.server_cmd,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        
+    def send_request(self, request):
+        # Send JSON request and get response
+        json_request = json.dumps(request) + "\n"
+        self.process.stdin.write(json_request)
+        self.process.stdin.flush()
+        
+        # Read response
+        response_line = self.process.stdout.readline()
+        return json.loads(response_line)
+        
+    def stop_server(self):
+        # Terminate the server process
+        if self.process:
+            self.process.terminate()
+```
+
+### Service Pattern
+Used for providing a consistent interface to MCP servers.
+
+```python
+class GitHubMcpService:
+    def __init__(self):
+        self.manager = SubprocessManager([
+            "cmd.exe", "/c", 
+            "npx", "-y", "@modelcontextprotocol/server-github"
+        ])
+        self.manager.start_server()
+        
+    async def search_repositories(self, query, page=1, per_page=30):
+        # Use the subprocess manager to call the GitHub MCP
+        result = self.manager.send_request({
+            "server_name": "github.com/modelcontextprotocol/servers/tree/main/src/github",
+            "tool_name": "search_repositories",
+            "arguments": {
+                "query": query,
+                "page": page,
+                "perPage": per_page
+            }
+        })
+        return result
 ```
 
 ## Data Flow
